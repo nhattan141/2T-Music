@@ -18,7 +18,10 @@ module.exports = {
                 type: Sequelize.TEXT
             },
             img: {
-                type: Sequelize.STRING
+                type: Sequelize.BLOB
+            },
+            file: {
+                type: Sequelize.BLOB
             },
             createdAt: {
                 allowNull: false,

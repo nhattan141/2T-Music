@@ -8,8 +8,16 @@ let initWebRoutes = (app) => {
 
     router.get('/explore', homeController.getExplorePage)
 
+    //router login/signup
     router.post('/api/login', userController.handleLogin)
     router.post('/api/signup', userController.handleSignup)
+
+    //router User
+    router.get('/api/get-all-users', userController.handleGetAllUsers)
+    router.post('/api/create-new-user', userController.handleCreateNewUser)
+    router.delete('/api/delete-user', userController.handleDeleteUser)
+    router.put('/api/update-user', userController.handleUpdateUser)
+
 
     return app.use("/", router)
 }
