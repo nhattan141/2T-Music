@@ -10,7 +10,7 @@ import { userIsAuthenticated, userIsNotAuthenticated } from '../hoc/authenticati
 
 import { path } from '../utils'
 
-import Home from '../routes/Home';
+import HomeAdmin from '../routes/HomeAdmin';
 // import Login from '../routes/Login';
 import Login from '../containers/Auth/Login';
 import Header from './Header/Header';
@@ -49,7 +49,7 @@ class App extends Component {
 
                         <span className="content-container">
                             <Switch>
-                                <Route path={path.HOME} exact component={(Home)} />
+                                <Route path={path.HomeAdmin} exact component={(HomeAdmin)} />
                                 <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                             </Switch>

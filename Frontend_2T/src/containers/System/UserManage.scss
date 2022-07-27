@@ -1,0 +1,89 @@
+.user-manage-container {
+
+    title {
+        color: #f000 !important;
+    }
+
+    .btn_add {
+        padding: 0 10px;
+
+        i {
+            padding: 0 10px 0 0;
+        }
+    }
+
+    .users-table {
+
+        table {
+
+
+            tr {
+
+                td {
+
+                    .btn-edit,
+                    .btn-delete {
+                        background: transparent;
+                        color: green;
+                        border: none;
+                        padding: 0 20px 0 20px;
+                        align-items: center;
+                        outline: none;
+                    }
+
+                    .btn-delete {
+                        color: red;
+                    }
+
+                    &:last-child {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal-user-container {
+    .modal-user-body {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            width: 49%;
+
+            input,
+            select {
+                height: 50px;
+                border: none;
+                border-bottom: 2px solid #f2f2f2;
+                outline: none;
+                transition: all 0.4s ease;
+                font-size: 17px;
+
+                &:focus {
+                    border-color: #21d5a2;
+                }
+
+                &::placeholder {
+                    color: #999;
+                    transition: all 0.4s ease;
+                }
+
+                &:focus::placeholder {
+                    color: #21d5a2;
+                }
+            }
+        }
+
+        .show-img {
+            width: 39%;
+            height: 250px;
+            padding-left: 20px;
+            border: 2px solid #f0f0f0
+        }
+    }
+}
