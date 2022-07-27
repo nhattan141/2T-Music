@@ -1,4 +1,4 @@
-import { result } from 'lodash';
+import { result, uniq } from 'lodash';
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
@@ -6,38 +6,40 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { handleCreateNewUser } from '../../services/userService'
 import './Modal.scss'
 import { emitter } from '../../utils/emitter'
+import _ from 'lodash'
+
 
 class ModalUser extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             email: '',
             password: '',
             firstName: '',
             lastName: '',
-            gender: 1,
-            roleId: 1,
+            gender: this.props.currentUser.gender,
+            roleId: this.props.currentUser.roleId,
             avatar: ''
         }
-        this.listenToEmitter()
-    }
-
-    listenToEmitter() {
-        emitter.on('EVENT_CLEAR_MODAL_DATA', () => {
-            this.setState({
-                email: '',
-                password: '',
-                firstName: '',
-                lastName: '',
-                gender: 1,
-                roleId: 1,
-                avatar: ''
-            })
-        })
     }
 
     componentDidMount() {
+        let user = this.props.currentUser
+        if (user && !_.isEmpty(user)) {
+            this.setState({
+                id: user.id,
+                email: user.email,
+                password: 'hashpassword',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                gender: user.gender,
+                roleId: user.roleId,
+                avatar: user.avatar,
+            })
+
+        }
     }
 
     toggle = () => {
@@ -53,28 +55,10 @@ class ModalUser extends Component {
         console.log(e.target.value);
     }
 
-    validate = () => {
-        let isValid = true
-        let arrInput = ["email", "password",
-            "firstName", "lastName",
-            "gender", "roleId", "avatar"]
-        for (let i = 0; i < arrInput.length; i++) {
-            if (!this.state[arrInput[i]]) {
-                isValid = false
-                alert("Missing input " + arrInput[i])
-                break
-            }
-        }
-
-        return isValid
+    handleEditNewUser = async () => {
+        await this.props.updateUser(this.state)
     }
 
-    handleCreateNewUser = () => {
-        let isValidate = this.validate()
-        if (isValidate === true) {
-            this.props.createNewUser(this.state)
-        }
-    }
 
     render() {
         return (
@@ -85,7 +69,7 @@ class ModalUser extends Component {
                 centered
                 className='modal-user-container'
             >
-                <ModalHeader toggle={() => { this.toggle() }}>Add new user</ModalHeader>
+                <ModalHeader toggle={() => { this.toggle() }}>Edit user</ModalHeader>
                 <ModalBody>
                     <div className='modal-user-body'>
                         <div className="input-container">
@@ -93,7 +77,7 @@ class ModalUser extends Component {
                             <input type="text"
                                 name='email'
                                 value={this.state.email}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'email') }}
+                                disabled
                             />
                         </div>
                         <div className="input-container">
@@ -102,7 +86,7 @@ class ModalUser extends Component {
                                 type="password"
                                 name='password'
                                 value={this.state.password}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'password') }}
+                                disabled
                             />
                         </div>
                         <div className="input-container">
@@ -127,16 +111,16 @@ class ModalUser extends Component {
                         </div>
                         <div className="input-container">
                             <label>Gender</label>
-                            <select name="gender"
+                            <select name="gender" defaultValue={this.state.gender}
                                 onChange={(event) => { this.handleOnchangeInput(event, 'gender') }}
                             >
-                                <option value="1">Male</option>
+                                <option value="1" >Male</option>
                                 <option value="0">Female</option>
                             </select>
                         </div>
                         <div className="input-container">
                             <label>Role</label>
-                            <select name="roleId"
+                            <select name="roleId" defaultValue={this.state.roleId}
                                 onChange={(event) => { this.handleOnchangeInput(event, 'roleId') }}
                             >
                                 <option value="1">Admin</option>
@@ -157,7 +141,7 @@ class ModalUser extends Component {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => { this.handleCreateNewUser() }}>Add new</Button>{' '}
+                    <Button color="primary" onClick={() => { this.handleEditNewUser() }}>Edit</Button>{' '}
                     <Button color="secondary" onClick={() => { this.toggle() }}>Cancel</Button>
                 </ModalFooter>
             </Modal>

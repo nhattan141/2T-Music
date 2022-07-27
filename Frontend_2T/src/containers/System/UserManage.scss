@@ -24,15 +24,23 @@
                     .btn-edit,
                     .btn-delete {
                         background: transparent;
-                        color: green;
+                        color: #21d5a2;
                         border: none;
                         padding: 0 20px 0 20px;
                         align-items: center;
                         outline: none;
+
+                        &:hover {
+                            color: green
+                        }
                     }
 
                     .btn-delete {
-                        color: red;
+                        color: rgb(232, 62, 62);
+
+                        &:hover {
+                            color: red
+                        }
                     }
 
                     &:last-child {
@@ -83,7 +91,12 @@
             width: 39%;
             height: 250px;
             padding-left: 20px;
-            border: 2px solid #f0f0f0
+            border: 2px solid #f0f0f0;
+
+            img {
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     }
 }
