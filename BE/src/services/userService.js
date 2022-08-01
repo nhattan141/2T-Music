@@ -219,6 +219,9 @@ let handleGetAllUsers = (userId) => {
             if (userId && userId !== "All") {
                 users = await db.User.findOne({
                     where: { id: userId },
+                    attributes: {
+                        exclude: ['password'],
+                    }
                 })
             }
             resolve(users)
