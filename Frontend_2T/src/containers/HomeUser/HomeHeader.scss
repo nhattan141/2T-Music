@@ -1,0 +1,98 @@
+.home-header-container {
+    height: 80px;
+    width: 100%;
+    background-color: #190820;
+    display: flex;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .home-header-content {
+        margin: 15px;
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+
+        .left-content {
+            width: 50px;
+            height: 50px;
+            // border: 2px solid red;
+
+            img {
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                border-radius: 15px;
+            }
+        }
+
+        .mid-content {
+            width: 50%;
+            height: 100%;
+            // border: 2px solid red;
+            display: flex;
+            align-items: center;
+
+            .search_group {
+                width: 80%;
+                height: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                border-radius: 50px;
+                background-color: #36054b;
+                cursor: pointer;
+
+                i {
+                    color: #d0cccc;
+                    font-size: 20px;
+
+                    &:hover {
+                        color: #fff;
+                    }
+                }
+
+                .search {
+                    background: transparent;
+                    height: 30px;
+                    width: 90%;
+                    border: none;
+                    outline: none;
+                    color: #d0cccc;
+                    font-size: 20px;
+
+                    &:focus {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+        .right-content {
+            width: 30%;
+            height: 100%;
+            // border: 2px solid red;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .login-btn {
+                height: 35px;
+                width: 120px;
+                color: #fff;
+                border: none;
+                border-radius: 50px;
+                outline: none;
+                background: #36054b;
+                font-size: 20px;
+                justify-content: flex-end;
+
+                &:hover {
+                    background: #a812ea;
+                }
+            }
+        }
+    }
+}

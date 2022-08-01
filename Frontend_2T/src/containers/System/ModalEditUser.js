@@ -21,13 +21,22 @@ class ModalUser extends Component {
             lastName: '',
             gender: this.props.currentUser.gender,
             roleId: this.props.currentUser.roleId,
-            avatar: ''
+            avatar: '',
+            previewAvatar: '',
         }
     }
 
     componentDidMount() {
         let user = this.props.currentUser
         if (user && !_.isEmpty(user)) {
+
+            let avatarBase64 = ''
+            if (user.avatar) {
+                const avatarBuffer = Buffer.from(JSON.stringify(user.avatar))
+                avatarBase64 = "data:image/ipeg;base64," + avatarBuffer.toString('base64')
+            }
+
+
             this.setState({
                 id: user.id,
                 email: user.email,
@@ -36,9 +45,11 @@ class ModalUser extends Component {
                 lastName: user.lastName,
                 gender: user.gender,
                 roleId: user.roleId,
-                avatar: user.avatar,
+                avatar: '',
+                previewAvatar: avatarBase64
             })
 
+            console.log(this.state);
         }
     }
 
@@ -136,7 +147,7 @@ class ModalUser extends Component {
                             />
                         </div>
                         <div className="show-img">
-                            <img src={this.state.avatar} alt='avatar'></img>
+                            <img src={this.state.previewAvatar} alt='avatar'></img>
                         </div>
                     </div>
                 </ModalBody>

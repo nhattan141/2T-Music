@@ -2,6 +2,7 @@ import { result } from 'lodash';
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { CommonUtils } from '../../utils'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { handleCreateNewUser } from '../../services/userService'
 import './Modal.scss'
@@ -18,7 +19,8 @@ class ModalUser extends Component {
             lastName: '',
             gender: 1,
             roleId: 1,
-            avatar: ''
+            avatar: '',
+            previewAvatar: ''
         }
         this.listenToEmitter()
     }
@@ -32,7 +34,8 @@ class ModalUser extends Component {
                 lastName: '',
                 gender: 1,
                 roleId: 1,
-                avatar: ''
+                avatar: '',
+                previewAvatar: ''
             })
         })
     }
@@ -44,13 +47,28 @@ class ModalUser extends Component {
         this.props.toggleUserModal()
     }
 
-    handleOnchangeInput = (e, id) => {
-        let copyState = { ...this.state }
-        copyState[id] = e.target.value
-        this.setState({
-            ...copyState,
-        })
-        console.log(e.target.value);
+    handleOnchangeInput = async (e, id) => {
+        if (id == 'avatar') {
+            let data = e.target.files
+            let file = data[0]
+
+            if (file) {
+                let base64 = await CommonUtils.getBase64(file)
+                let onjectUrl = URL.createObjectURL(file)
+                this.setState({
+                    previewAvatar: onjectUrl,
+                    avatar: base64
+                })
+            }
+        } else {
+            let copyState = { ...this.state }
+            copyState[id] = e.target.value
+            this.setState({
+                ...copyState,
+            })
+            console.log(e.target.value);
+        }
+
     }
 
     validate = () => {
@@ -152,7 +170,7 @@ class ModalUser extends Component {
                             />
                         </div>
                         <div className="show-img">
-                            <img src={this.state.avatar} alt='avatar'></img>
+                            <img src={this.state.previewAvatar} alt='avatar'></img>
                         </div>
                     </div>
                 </ModalBody>

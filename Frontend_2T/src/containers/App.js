@@ -11,6 +11,7 @@ import { userIsAuthenticated, userIsNotAuthenticated } from '../hoc/authenticati
 import { path } from '../utils'
 
 import HomeAdmin from '../routes/HomeAdmin';
+import HomeUser from '../containers/HomeUser/HomeUser';
 // import Login from '../routes/Login';
 import Login from '../containers/Auth/Login';
 import Header from './Header/Header';
@@ -18,6 +19,11 @@ import System from '../routes/System';
 
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
+
+import CustomScrollbars from '../components/CustomScrollbars';
+
+{/* <link rel="stylesheet" href=
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css"></link> */}
 
 class App extends Component {
 
@@ -48,11 +54,14 @@ class App extends Component {
                         {this.props.isLoggedIn && <Header />}
 
                         <span className="content-container">
-                            <Switch>
-                                <Route path={path.HomeAdmin} exact component={(HomeAdmin)} />
-                                <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
-                                <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
-                            </Switch>
+                            <CustomScrollbars style={{ height: '100vh', width: '100%' }}>
+                                <Switch>
+                                    <Route path={path.HomeAdmin} exact component={(HomeAdmin)} />
+                                    <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
+                                    <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
+                                    <Route path={path.HomeUser} component={(HomeUser)} />
+                                </Switch>
+                            </CustomScrollbars>
                         </span>
 
                         <ToastContainer

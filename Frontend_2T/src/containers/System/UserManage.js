@@ -30,6 +30,7 @@ class UserManage extends Component {
             })
 
         }
+
         console.log(this.state.usersArr);
     }
 
@@ -159,7 +160,9 @@ class UserManage extends Component {
                                             <td>{user.lastName}</td>
                                             <td>{user.gender === 1 ? 'Male' : 'Female'}</td>
                                             <td>{user.roleId === 1 ? 'Admin' : 'User'}</td>
-                                            <td>{user.avatar.data}</td>
+                                            <td>
+                                                <img src={user.avatar.buffer} alt='avatar'></img>
+                                            </td>
                                             <td>
                                                 <button className='btn-edit'
                                                     onClick={() => { this.handleUpdateUser(user) }}

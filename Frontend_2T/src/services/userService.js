@@ -25,6 +25,10 @@ const handleUpdateUser = (data) => {
     return axios.put(`/api/update-user`, data);
 }
 
+const handleGetAllSong = () => {
+    return axios.get(`https://mp3.zing.vn/xhr/recommend?type=audio&id=ZW67OIA0`)
+}
+
 
 export {
     handleLoginApi,
@@ -32,5 +36,6 @@ export {
     handleGetAllUsersApi,
     handleCreateNewUser,
     handleDeleteUser,
-    handleUpdateUser
+    handleUpdateUser,
+    handleGetAllSong
 }
