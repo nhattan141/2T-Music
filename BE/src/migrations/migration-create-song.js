@@ -23,6 +23,15 @@ module.exports = {
             file: {
                 type: Sequelize.BLOB
             },
+            isRecent: {
+                type: Sequelize.STRING
+            },
+            isTop3: {
+                type: Sequelize.STRING
+            },
+            isNewRelease: {
+                type: Sequelize.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

@@ -1,4 +1,4 @@
-import { response } from 'express'
+import { request, response } from 'express'
 import db from '../models/index'
 import userService from '../services/userService'
 
@@ -39,10 +39,11 @@ let handleSignup = async (req, res) => {
             message: 'Invalid confirm password'
         })
     }
-    let userData = await userService.handleSignup(req.body)
+    let userData = await userService.handleUserSignup(req.body)
     return res.status(200).json({
         errCode: userData.errCode,
-        message: userData.errMessage
+        message: userData.errMessage,
+        user: userData.user ? userData.user : {}
     })
 }
 

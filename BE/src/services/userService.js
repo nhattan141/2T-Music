@@ -45,7 +45,7 @@ let handleUserLogin = (email, password) => {
     })
 }
 
-let handleSignup = async (data) => {
+let handleUserSignup = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let userData = {}
@@ -64,6 +64,15 @@ let handleSignup = async (data) => {
 
                 userData.errCode = 0
                 userData.errMessage = `Signup success`
+                userData.user = {
+                    email: data.emailSignup,
+                    password: hashPasswordFromBcrypt,
+                    firstName: "2T",
+                    lastName: "Music",
+                    gender: true,
+                    roleId: 0,
+                    avatar: '',
+                }
             } else {
                 userData.errCode = 3
                 userData.errMessage = `Your email is exist`
@@ -111,12 +120,12 @@ let handleDeleteUser = (data) => {
             let userData = {}
 
             let user = await db.User.findOne({
-                where: { id: data.id }
+                where: { id: data }
             })
 
             if (user) {
                 await db.User.destroy({
-                    where: { id: data.id }
+                    where: { id: data }
                 })
 
                 userData.errCode = 0
@@ -155,9 +164,10 @@ let handleUpdateUser = (data) => {
                 user.lastName = data.lastName
                 user.gender = data.gender == 0 ? false : true
                 user.roleId = data.roleId
-                user.avatar = data.avatar
-                await user.save(
-                )
+                if (data.avatar) {
+                    user.avatar = data.avatar
+                }
+                await user.save()
 
                 userData.errCode = 0
                 userData.errMessage = 'Update user successfully'
@@ -233,7 +243,7 @@ let handleGetAllUsers = (userId) => {
 
 module.exports = {
     handleUserLogin: handleUserLogin,
-    handleSignup: handleSignup,
+    handleUserSignup: handleUserSignup,
     handleGetAllUsers: handleGetAllUsers,
     handleCreateNewUser: handleCreateNewUser,
     handleDeleteUser: handleDeleteUser,
