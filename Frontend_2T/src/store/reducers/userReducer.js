@@ -28,7 +28,7 @@ const appReducer = (state = initialState, action) => {
         case actionTypes.USER_SIGNUP_SUCCESS:
             return {
                 ...state,
-                isLoggedIn: false,
+                isLoggedIn: true,
                 userInfo: action.userInfo
             }
         default:

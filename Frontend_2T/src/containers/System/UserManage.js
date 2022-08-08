@@ -1,189 +1,273 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { handleGetAllUsersApi, handleCreateNewUser, handleDeleteUser, handleUpdateUser } from '../../services/userService'
 import './UserManage.scss'
-import ModalUser from './ModalUser';
-import ModalEditUser from './ModalEditUser';
 import { emitter } from '../../utils/emitter'
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
+import * as actions from '../../store/actions/index'
+import { ToastContainer, toast } from 'react-toastify';
+import { CommonUtils } from '../../utils'
+import logo from '../../assets/images/neon_2.png'
+import TableMangeUser from './TableMangeUser';
 class UserManage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             usersArr: [],
-            isOpenModalUser: false,
-            isOpenModalEditUser: false,
-            userEdit: {}
+            Id: '',
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            gender: 1,
+            roleId: 1,
+            avatar: '',
+            previewAvatar: logo,
+            isOpen: false,
+            isUpdate: false
         }
     }
 
     async componentDidMount() {
-        await this.handleGetAllUser()
+        this.props.getAllUser()
     }
 
-    handleGetAllUser = async () => {
-        let res = await handleGetAllUsersApi('All')
-        if (res && res.errCode === 0) {
+    async componentDidUpdate(prevProps, prevState, snapshot) {
+        // if (prevProps.listUsers !== this.props.listUsers) {
+        //     this.setState({
+        //         usersArr: this.props.listUsers,
+        //         email: '',
+        //         password: '',
+        //         firstName: '',
+        //         lastName: '',
+        //         gender: 1,
+        //         roleId: 1,
+        //         avatar: '',
+        //         previewAvatar: logo
+        //     })
+        // }
+    }
+
+    handleOnchangeInput = async (e, id) => {
+        if (id == 'avatar') {
+            let data = e.target.files
+            let file = data[0]
+            console.log(file);
+            if (file) {
+                let base64 = await CommonUtils.getBase64(file)
+                console.log('base64 img', base64);
+                let onjectUrl = URL.createObjectURL(file)
+                this.setState({
+                    previewAvatar: onjectUrl,
+                    avatar: base64
+                })
+            }
+        } else {
+            let copyState = { ...this.state }
+            copyState[id] = e.target.value
             this.setState({
-                usersArr: res.users
+                ...copyState,
             })
-
+            console.log(e.target.value);
         }
 
-        console.log(this.state.usersArr);
     }
 
-    handleAddNewUser = () => {
-        this.setState({
-            isOpenModalUser: true
-        })
+    handleOpenImage = () => {
+        if (this.state.avatar) {
+            this.setState({
+                isOpen: true
+            })
+        }
     }
 
-    toggleUserModal = () => {
-        this.setState({
-            isOpenModalUser: !this.state.isOpenModalUser
-        })
-    }
-    toggleUserModalEdit = () => {
-        this.setState({
-            isOpenModalEditUser: !this.state.isOpenModalEditUser
-        })
-    }
-
-    createNewUser = async (data) => {
-        try {
-            let res = await handleCreateNewUser(data)
-            if (res && res.errCode !== 0) {
-                alert(res.message)
-            } else {
-                await this.handleGetAllUser()
-                this.setState({
-                    isOpenModalUser: false
-                })
-
-                emitter.emit('EVENT_CLEAR_MODAL_DATA')
+    checkValidate = () => {
+        let isValid = true
+        let arrCheck = ['email', 'password', 'firstName', 'lastName', 'gender', 'roleId']
+        for (let i = 0; i < arrCheck.length; i++) {
+            if (!this.state[arrCheck[i]]) {
+                isValid = false
+                toast.error('Please fill in the ' + arrCheck[i])
+                break
             }
-        } catch (e) {
-            console.log(e);
         }
+        return isValid
     }
 
-    handleDeleteUser = async (userId) => {
-        try {
-            let res = await handleDeleteUser(userId)
-            if (res && res.errCode !== 0) {
-                alert(res.message)
-            } else {
-                await this.handleGetAllUser()
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    handleUpdateUser = async (user) => {
-        console.log(user);
-        this.setState({
-            isOpenModalEditUser: true,
-            userEdit: user
+    handleSubmit = () => {
+        let isValid = this.checkValidate()
+        if (isValid === false) return
+        this.props.createNewUser({
+            email: this.state.email,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            gender: this.state.gender,
+            roleId: this.state.roleId,
+            avatar: this.state.avatar,
         })
     }
 
-    updateUser = async (data) => {
-        try {
-            let res = await handleUpdateUser(data)
-            if (res && res.errCode !== 0) {
-                alert(res.message)
-            } else {
-                await this.handleGetAllUser()
-                this.setState({
-                    isOpenModalEditUser: false
-                })
-            }
-        } catch (e) {
-            console.log(e);
+    handleOpenUpdate = (user) => {
+        let imageBase64 = ''
+        if (user.avatar) {
+            imageBase64 = new Buffer(user.avatar, 'base64').toString('binary')
         }
+        this.setState({
+            isUpdate: true,
+            id: user.id,
+            email: user.email,
+            password: 'user.password',
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender,
+            roleId: user.roleId,
+            avtar: user.avtar,
+            previewAvatar: imageBase64
+        })
+        console.log('State user update: ', this.state);
+    }
+
+    emptyFill = () => {
+        if (this.state.isUpdate === true) {
+            this.setState({
+                isUpdate: false
+            })
+        }
+        this.setState({
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            gender: 1,
+            roleId: 1,
+            avatar: '',
+            previewAvatar: logo,
+        })
+
+    }
+
+    handleUpdateUser = (user) => {
+        this.props.updateUser(user)
+        this.emptyFill()
     }
 
     render() {
-        let usersArr = this.state.usersArr
+        let { usersArr,
+            email,
+            password,
+            firstName,
+            lastName,
+            gender,
+            roleId } = this.state
+        console.log('usersArr: ', usersArr);
         return (
             <div className="user-manage-container">
-                <ModalUser
-                    isOpen={this.state.isOpenModalUser}
-                    toggleUserModal={this.toggleUserModal}
-                    createNewUser={this.createNewUser}
-                />
-                {this.state.isOpenModalEditUser &&
-                    <ModalEditUser
-                        isOpen={this.state.isOpenModalEditUser}
-                        toggleUserModal={this.toggleUserModalEdit}
-                        updateUser={this.updateUser}
-                        currentUser={this.state.userEdit}
-                    />
-                }
-                <div className='title'>Manage User</div>
-                <div className='mx-2'>
-                    <button type="button"
-                        style={{ backgroundColor: '#1ca47d' }}
-                        className="btn btn-success btn_add"
-                        onClick={() => this.handleAddNewUser()}
-                    >
-                        <i className="fas fa-plus"></i>
-                        Add new user
-                    </button>
-                </div>
-                <div className='users-table mt-4 mx-2'>
-                    <table className="table table-hover table-fixed table-striped table-bordered">
-                        <thead className="table-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>Email</th>
-                                <th>Firstname</th>
-                                <th>Lastname</th>
-                                <th>Gender</th>
-                                <th>Role</th>
-                                <th>Avatar</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                <div className="user-manage-content">
+                    <div className="user-manage-title">Manage User</div>
+                    <div className="user-manage-form">
+                        <div className="input-container">
+                            <label>Email</label>
+                            <input type="text"
+                                name='email'
+                                value={email}
+                                disabled={this.state.isUpdate ? true : false}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'email') }}
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                name='password'
+                                value={password}
+                                disabled={this.state.isUpdate ? true : false}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'password') }}
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Firstname</label>
+                            <input
+                                type="text"
+                                name='firstName'
+                                value={firstName}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'firstName') }}
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Lastname</label>
+                            <input
+                                type="text"
+                                name='lastName'
+                                value={lastName}
 
-                        <tbody>
+                                onChange={(event) => { this.handleOnchangeInput(event, 'lastName') }}
+
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Gender</label>
+                            <select name="gender" value={gender}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'gender') }}
+                            >
+                                <option value="1" >Male</option>
+                                <option value="0">Female</option>
+                            </select>
+                        </div>
+                        <div className="input-container">
+                            <label>Role</label>
+                            <select name="roleId" value={roleId}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'roleId') }}
+                            >
+                                <option value="1">Admin</option>
+                                <option value="0">User</option>
+                            </select>
+                        </div>
+                        <div className="input-container">
+                            <label>Avatar</label>
+                            <input hidden={true}
+                                type="file"
+                                name='avatar'
+                                id='avatar'
+                                onChange={(event) => { this.handleOnchangeInput(event, 'avatar') }}
+                            />
+                            <label htmlFor="avatar" className="input-container avatar-btn">Upload</label>
+                            <div className="show-img">
+                                <img src={this.state.previewAvatar} alt='avatar'
+                                    onClick={() => this.handleOpenImage()}
+                                ></img>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="btn-save">
+                        <div className="btn-save-content">
                             {
-                                usersArr && usersArr.map((user, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <th scope="row">{index}</th>
-                                            <td>{user.email}</td>
-                                            <td>{user.firstName}</td>
-                                            <td>{user.lastName}</td>
-                                            <td>{user.gender === 1 ? 'Male' : 'Female'}</td>
-                                            <td>{user.roleId === 1 ? 'Admin' : 'User'}</td>
-                                            <td>
-                                                <img src={user.avatar.buffer} alt='avatar'></img>
-                                            </td>
-                                            <td>
-                                                <button className='btn-edit'
-                                                    onClick={() => { this.handleUpdateUser(user) }}
-                                                >
-                                                    <i className="fas fa-edit"></i>
-                                                </button>
-                                                <button className='btn-delete'
-                                                    onClick={() => { this.handleDeleteUser(user.id) }}
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
+                                this.state.isUpdate === false ?
+                                    <button type="button"
+                                        onClick={() => this.handleSubmit()}
+                                    >Add new</button> :
+                                    <button type="button"
+                                        onClick={() => this.handleUpdateUser(this.state)}
+                                    >Update</button>
                             }
-                        </tbody>
+                            <button type="button" className='btn-cancel'
+                                onClick={() => this.emptyFill()}
+                            >Cancel</button>
 
-
-                    </table>
-
+                        </div>
+                    </div>
+                    <TableMangeUser
+                        handleOpenUpdate={this.handleOpenUpdate}
+                    />
+                    {
+                        this.state.isOpen === true &&
+                        <Lightbox
+                            mainSrc={this.state.previewAvatar}
+                            onCloseRequest={() => this.setState({ isOpen: false })}
+                        />
+                    }
                 </div>
             </div>
         );
@@ -193,11 +277,15 @@ class UserManage extends Component {
 
 const mapStateToProps = state => {
     return {
+        listUsers: state.admin.users
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        createNewUser: (data) => dispatch(actions.createNewUser(data)),
+        getAllUser: () => dispatch(actions.getAllUser()),
+        updateUser: (user) => dispatch(actions.updateUser(user)),
     };
 };
 

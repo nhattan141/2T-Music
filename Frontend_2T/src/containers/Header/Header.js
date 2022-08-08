@@ -9,7 +9,8 @@ import './Header.scss';
 class Header extends Component {
 
     render() {
-        const { processLogout } = this.props;
+        const { processLogout, userInfo } = this.props;
+        console.log('User infor: ', userInfo);
 
         return (
             <div className="header-container">
@@ -17,7 +18,10 @@ class Header extends Component {
                 <div className="header-tabs-container">
                     <Navigator menus={adminMenu} />
                 </div>
-
+                <span>
+                    Welcome
+                    {userInfo && userInfo.roleId === 1 && userInfo.firstName ? userInfo.lastName : ''}
+                </span>
                 {/* nút logout */}
                 <div className="btn btn-logout" onClick={processLogout}>
                     <i className="fas fa-sign-out-alt"></i>
@@ -30,7 +34,8 @@ class Header extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: state.user.isLoggedIn
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo
     };
 };
 

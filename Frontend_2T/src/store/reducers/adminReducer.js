@@ -1,29 +1,20 @@
 import actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    isLoggedIn: false,
-    adminInfo: null
+    users: []
 }
 
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.ADMIN_LOGIN_SUCCESS:
+        case actionTypes.GET_ALL_USER_SUCCESS:
             return {
                 ...state,
-                isLoggedIn: true,
-                adminInfo: action.adminInfo
+                users: action.users
             }
-        case actionTypes.ADMIN_LOGIN_FAIL:
+        case actionTypes.GET_ALL_USER_FAIL:
             return {
                 ...state,
-                isLoggedIn: false,
-                adminInfo: null
-            }
-        case actionTypes.PROCESS_LOGOUT:
-            return {
-                ...state,
-                isLoggedIn: false,
-                adminInfo: null
+                users: ''
             }
         default:
             return state;
