@@ -1,5 +1,10 @@
 import actionTypes from './actionTypes';
-import { handleCreateNewUser, handleGetAllUsersApi, handleDeleteUser, handleUpdateUser } from '../../services/adminService'
+import {
+    handleCreateNewUser, handleGetAllUsersApi,
+    handleDeleteUser, handleUpdateUser,
+    handleGetAllSongs, handleCreateNewSong,
+    handleDeleteSong, handleUpdateSong
+} from '../../services/adminService'
 import { ToastContainer, toast } from 'react-toastify';
 
 export const createNewUser = (data) => {
@@ -103,10 +108,116 @@ export const updateUser = (data) => {
     }
 }
 
-const updateUserSuccess = () => ({
+export const updateUserSuccess = () => ({
     type: actionTypes.UPDATE_USER_SUCCESS
 })
 
-const updateUserFail = () => ({
+export const updateUserFail = () => ({
     type: actionTypes.UPDATE_USER_FAIL
+})
+
+export const getAllSongs = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleGetAllSongs('All')
+            if (res && res.errCode === 0) {
+                dispatch(getAllSongsSuccess(res.songs.reverse()))
+            } else {
+                dispatch(getAllSongsFail())
+            }
+        } catch (e) {
+            dispatch(getAllSongsFail())
+            console.log(e);
+        }
+    }
+}
+
+export const getAllSongsSuccess = (data) => ({
+    type: actionTypes.GET_ALL_SONG_SUCCESS,
+    songs: data
+})
+
+export const getAllSongsFail = () => ({
+    type: actionTypes.GET_ALL_SONG_FAIL
+})
+
+export const createNewSong = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleCreateNewSong(data)
+            if (res && res.errCode == 0) {
+                dispatch(createNewSongSuccess())
+                dispatch(getAllSongs())
+                toast.success('Create new song success')
+            } else {
+                dispatch(createNewSongFail())
+                toast.error('Create new song failed')
+            }
+        } catch (e) {
+            console.log(e);
+            dispatch(createNewSongFail())
+        }
+    }
+}
+
+export const createNewSongSuccess = () => ({
+    type: actionTypes.ADD_SONG_SUCCESS,
+})
+
+export const createNewSongFail = () => ({
+    type: actionTypes.ADD_SONG_FAIL
+})
+
+export const deleteSong = (songId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleDeleteSong(songId)
+            if (res && res.errCode == 0) {
+                dispatch(deleteSongSuccess())
+                dispatch(getAllSongs())
+                toast.success('Delete song successfully')
+            } else {
+                dispatch(deleteSongFail())
+                toast.error('Delete song failed')
+            }
+        } catch (e) {
+            dispatch(deleteSongFail())
+            console.log(e);
+        }
+    }
+}
+
+export const deleteSongSuccess = () => ({
+    type: actionTypes.DELETE_SONG_SUCCESS,
+})
+
+export const deleteSongFail = () => ({
+    type: actionTypes.DELETE_SONG_FAIL
+})
+
+export const updateSong = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleUpdateSong(data)
+            if (res && res.errCode === 0) {
+                dispatch(updateSongSuccess())
+                dispatch(getAllSongs())
+                toast.success('Update song successfully')
+            } else {
+                dispatch(updateSongFail())
+                toast.error('Update song failed')
+            }
+        } catch (e) {
+            console.log(e);
+            dispatch(updateSongFail())
+        }
+    }
+}
+
+export const updateSongSuccess = () => ({
+    type: actionTypes.UPDATE_SONG_SUCCESS,
+})
+
+export const updateSongFail = () => ({
+    type: actionTypes.UPDATE_SONG_FAIL,
 })

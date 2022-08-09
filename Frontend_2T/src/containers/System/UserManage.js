@@ -16,7 +16,7 @@ class UserManage extends Component {
         super(props);
         this.state = {
             usersArr: [],
-            Id: '',
+            id: '',
             email: '',
             password: '',
             firstName: '',
@@ -76,7 +76,7 @@ class UserManage extends Component {
     }
 
     handleOpenImage = () => {
-        if (this.state.avatar) {
+        if (this.state.previewAvatar) {
             this.setState({
                 isOpen: true
             })
@@ -124,7 +124,6 @@ class UserManage extends Component {
             lastName: user.lastName,
             gender: user.gender,
             roleId: user.roleId,
-            avtar: user.avtar,
             previewAvatar: imageBase64
         })
         console.log('State user update: ', this.state);

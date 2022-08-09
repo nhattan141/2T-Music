@@ -1,7 +1,8 @@
 import actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    users: []
+    users: [],
+    songs: []
 }
 
 const appReducer = (state = initialState, action) => {
@@ -15,6 +16,16 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: ''
+            }
+        case actionTypes.GET_ALL_SONG_SUCCESS:
+            return {
+                ...state,
+                songs: action.songs
+            }
+        case actionTypes.GET_ALL_SONG_FAIL:
+            return {
+                ...state,
+                songs: ''
             }
         default:
             return state;
