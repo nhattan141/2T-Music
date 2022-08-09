@@ -148,33 +148,35 @@ let handleUpdateUser = (data) => {
         try {
             let userData = {}
 
-            if (!data.id) {
+            if (data.id) {
+
+                let user = await db.User.findOne({
+                    where: { id: data.id },
+                    raw: false
+                })
+
+                if (user) {
+                    user.firstName = data.firstName
+                    user.lastName = data.lastName
+                    user.gender = data.gender == 0 ? false : true
+                    user.roleId = data.roleId
+                    if (data.avatar) {
+                        user.avatar = data.avatar
+                    }
+                    await user.save()
+
+                    userData.errCode = 0
+                    userData.errMessage = 'Update user successfully'
+                } else {
+                    userData.errCode = 2
+                    userData.errMessage = 'User not found'
+                }
+            } else {
                 userData.errCode = 1
                 userData.errMessage = 'missing id'
-                resolve(userData)
             }
 
-            let user = await db.User.findOne({
-                where: { id: data.id },
-                raw: false
-            })
 
-            if (user) {
-                user.firstName = data.firstName
-                user.lastName = data.lastName
-                user.gender = data.gender == 0 ? false : true
-                user.roleId = data.roleId
-                if (data.avatar) {
-                    user.avatar = data.avatar
-                }
-                await user.save()
-
-                userData.errCode = 0
-                userData.errMessage = 'Update user successfully'
-            } else {
-                userData.errCode = 2
-                userData.errMessage = 'User not found'
-            }
 
             resolve(userData)
         } catch (e) {

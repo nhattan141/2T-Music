@@ -99,39 +99,39 @@ let updateSong = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let songData = {}
-            if (!data.id) {
-                songData.errCode = 1
-                songData.errMessage = "Missing song id"
-            }
+            if (data.id) {
 
-            let song = await db.Song.findOne({
-                where: { id: data.id },
-                raw: false
-            })
+                let song = await db.Song.findOne({
+                    where: { id: data.id },
+                    raw: false
+                })
 
-            if (song) {
-                song.songName = data.songName
-                song.singer = data.singer
-                song.lyrics = data.lyrics
-                if (data.img) {
-                    song.img = data.img
+                if (song) {
+                    song.songName = data.songName
+                    song.singer = data.singer
+                    song.lyrics = data.lyrics
+                    if (data.img) {
+                        song.img = data.img
+                    }
+                    if (data.file) {
+                        song.file = data.file
+                    }
+                    song.isRecent = data.isRecent
+                    song.isTop3 = data.isTop3
+                    song.isNewRelease = data.isNewRelease
+
+                    await song.save()
+
+                    songData.errCode = 0
+                    songData.errMessage = 'Update song successfully'
+                } else {
+                    songData.errCode = 1
+                    songData.errMessage = 'This song is not existed'
                 }
-                if (data.file) {
-                    song.file = data.file
-                }
-                song.isRecent = data.isRecent
-                song.isTop3 = data.isTop3
-                song.isNewRelease = data.isNewRelease
-
-                await song.save()
-
-                songData.errCode = 0
-                songData.errMessage = 'Update song successfully'
             } else {
                 songData.errCode = 2
-                songData.errMessage = 'This song is not existed'
+                songData.errMessage = 'Mising song id'
             }
-
             resolve(songData)
         } catch (e) {
             reject(e)

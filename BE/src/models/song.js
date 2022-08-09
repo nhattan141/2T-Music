@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     lyrics: DataTypes.TEXT,
     img: DataTypes.BLOB,
     file: DataTypes.BLOB,
+    isRecent: DataTypes.STRING,
+    isTop3: DataTypes.STRING,
+    isNewRelease: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Song',
