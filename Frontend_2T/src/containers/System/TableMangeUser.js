@@ -23,9 +23,9 @@ class UserManage extends Component {
             gender: 1,
             roleId: 1,
             avatar: '',
-            previewAvatar: logo,
+            previewAvatar: 'http://127.0.0.1:8887/images/profile_pic-1660225668467.jpg',
             isOpen: false,
-            isUpdate: false
+            isUpdate: false,
         }
     }
 
@@ -93,9 +93,7 @@ class UserManage extends Component {
                                         </td>
                                         <td>
                                             <div className="user-avatar">
-                                                <img src={
-                                                    new Buffer(user.avatar, 'base64').toString('binary')
-                                                }>
+                                                <img src={user.avatar}>
                                                 </img>
                                             </div>
                                         </td>

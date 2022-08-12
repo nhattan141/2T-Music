@@ -24,7 +24,7 @@ class UserManage extends Component {
             gender: 1,
             roleId: 1,
             avatar: '',
-            previewAvatar: logo,
+            previewAvatar: 'http://127.0.0.1:8887/images/profile_pic-1660225668467.jpg',
             isOpen: false,
             isUpdate: false
         }
@@ -56,12 +56,10 @@ class UserManage extends Component {
             let file = data[0]
             console.log(file);
             if (file) {
-                let base64 = await CommonUtils.getBase64(file)
-                console.log('base64 img', base64);
                 let onjectUrl = URL.createObjectURL(file)
                 this.setState({
                     previewAvatar: onjectUrl,
-                    avatar: base64
+                    avatar: file
                 })
             }
         } else {
@@ -161,102 +159,103 @@ class UserManage extends Component {
             lastName,
             gender,
             roleId } = this.state
-        console.log('usersArr: ', usersArr);
         return (
             <div className="user-manage-container">
                 <div className="user-manage-content">
                     <div className="user-manage-title">Manage User</div>
-                    <div className="user-manage-form">
-                        <div className="input-container">
-                            <label>Email</label>
-                            <input type="text"
-                                name='email'
-                                value={email}
-                                disabled={this.state.isUpdate ? true : false}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'email') }}
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                name='password'
-                                value={password}
-                                disabled={this.state.isUpdate ? true : false}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'password') }}
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label>Firstname</label>
-                            <input
-                                type="text"
-                                name='firstName'
-                                value={firstName}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'firstName') }}
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label>Lastname</label>
-                            <input
-                                type="text"
-                                name='lastName'
-                                value={lastName}
+                    <form method='post'>
+                        <div className="user-manage-form">
+                            <div className="input-container">
+                                <label>Email</label>
+                                <input type="text"
+                                    name='email'
+                                    value={email}
+                                    disabled={this.state.isUpdate ? true : false}
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'email') }}
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label>Password</label>
+                                <input
+                                    type="password"
+                                    name='password'
+                                    value={password}
+                                    disabled={this.state.isUpdate ? true : false}
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'password') }}
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label>Firstname</label>
+                                <input
+                                    type="text"
+                                    name='firstName'
+                                    value={firstName}
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'firstName') }}
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label>Lastname</label>
+                                <input
+                                    type="text"
+                                    name='lastName'
+                                    value={lastName}
 
-                                onChange={(event) => { this.handleOnchangeInput(event, 'lastName') }}
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'lastName') }}
 
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label>Gender</label>
-                            <select name="gender" value={gender}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'gender') }}
-                            >
-                                <option value="1" >Male</option>
-                                <option value="0">Female</option>
-                            </select>
-                        </div>
-                        <div className="input-container">
-                            <label>Role</label>
-                            <select name="roleId" value={roleId}
-                                onChange={(event) => { this.handleOnchangeInput(event, 'roleId') }}
-                            >
-                                <option value="1">Admin</option>
-                                <option value="0">User</option>
-                            </select>
-                        </div>
-                        <div className="input-container">
-                            <label>Avatar</label>
-                            <input hidden={true}
-                                type="file"
-                                name='avatar'
-                                id='avatar'
-                                onChange={(event) => { this.handleOnchangeInput(event, 'avatar') }}
-                            />
-                            <label htmlFor="avatar" className="input-container avatar-btn">Upload</label>
-                            <div className="show-img">
-                                <img src={this.state.previewAvatar} alt='avatar'
-                                    onClick={() => this.handleOpenImage()}
-                                ></img>
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label>Gender</label>
+                                <select name="gender" value={gender}
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'gender') }}
+                                >
+                                    <option value="1" >Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                            </div>
+                            <div className="input-container">
+                                <label>Role</label>
+                                <select name="roleId" value={roleId}
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'roleId') }}
+                                >
+                                    <option value="1">Admin</option>
+                                    <option value="0">User</option>
+                                </select>
+                            </div>
+                            <div className="input-container">
+                                <label>Avatar</label>
+                                <input hidden={true}
+                                    type="file"
+                                    name='avatar'
+                                    id='avatar'
+                                    onChange={(event) => { this.handleOnchangeInput(event, 'avatar') }}
+                                />
+                                <label htmlFor="avatar" className="input-container avatar-btn">Upload</label>
+                                <div className="show-img">
+                                    <img src={this.state.previewAvatar} alt='avatar'
+                                        onClick={() => this.handleOpenImage()}
+                                    ></img>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="btn-save">
-                        <div className="btn-save-content">
-                            {
-                                this.state.isUpdate === false ?
-                                    <button type="button"
-                                        onClick={() => this.handleSubmit()}
-                                    >Add new</button> :
-                                    <button type="button"
-                                        onClick={() => this.handleUpdateUser(this.state)}
-                                    >Update</button>
-                            }
-                            <button type="button" className='btn-cancel'
-                                onClick={() => this.emptyFill()}
-                            >Cancel</button>
+                        <div className="btn-save">
+                            <div className="btn-save-content">
+                                {
+                                    this.state.isUpdate === false ?
+                                        <button type="button"
+                                            onClick={() => this.handleSubmit()}
+                                        >Add new</button> :
+                                        <button type="button"
+                                            onClick={() => this.handleUpdateUser(this.state)}
+                                        >Update</button>
+                                }
+                                <button type="button" className='btn-cancel'
+                                    onClick={() => this.emptyFill()}
+                                >Cancel</button>
 
+                            </div>
                         </div>
-                    </div>
+                    </form>
                     <TableMangeUser
                         handleOpenUpdate={this.handleOpenUpdate}
                     />
