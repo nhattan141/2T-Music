@@ -7,6 +7,22 @@
     <title>2T Explore</title>
 </head>
 <body>
-    <h1>Welcome to 2T Explore</h1>
+    <form method="POST" action="/upload-profile-pic" enctype="multipart/form-data">
+        <div>
+            <label>Select your profile picture:</label>
+            <input type="file" name="profile_pic" class="upload"/>
+        </div>
+        <div>
+            <img src="http://127.0.0.1:8887/images/profile_pic-1660225668467.jpg" width="100"  height="100" alt="">
+            <input type="submit" name="btn_upload_profile_pic" value="Upload" />
+        </div>
+    </form>
+    <script>
+        var user_name = document.querySelector('.upload')
+        user_name.addEventListener('change',(event) => {
+            console.log(event.target.files[0]);
+        });
+
+    </script>
 </body>
 </html>

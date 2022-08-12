@@ -139,9 +139,33 @@ let updateSong = (data) => {
     })
 }
 
+let getRecentSongs = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let songData = {}
+            let songs = await db.Song.findAll({
+                where: { isTop3: '1' },
+                raw: true
+            })
+
+            if (songs) {
+                songData.errCode = 0
+                songData.errMessage = 'Get top song successfully'
+                songData.songs = songs
+            } else {
+                songData.errCode = 1
+                songData.errMessage = 'Get top song fail'
+            }
+            resolve(songData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 module.exports = {
     getAllSongs: getAllSongs,
     createNewSong: createNewSong,
     deleteSong: deleteSong,
     updateSong: updateSong,
+    getRecentSongs: getRecentSongs,
 }

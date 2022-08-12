@@ -18,10 +18,10 @@ module.exports = {
                 type: Sequelize.TEXT
             },
             img: {
-                type: Sequelize.BLOB
+                type: Sequelize.STRING
             },
             file: {
-                type: Sequelize.BLOB
+                type: Sequelize.STRING
             },
             isRecent: {
                 type: Sequelize.STRING

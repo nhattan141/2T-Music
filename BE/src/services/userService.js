@@ -85,7 +85,8 @@ let handleUserSignup = async (data) => {
     })
 }
 
-let handleCreateNewUser = (data) => {
+let handleCreateNewUser = (data, urlAvatar) => {
+    console.log(data);
     return new Promise(async (resolve, reject) => {
         try {
             let userData = {}
@@ -99,7 +100,7 @@ let handleCreateNewUser = (data) => {
                     lastName: data.lastName,
                     gender: data.gender == 0 ? false : true,
                     roleId: data.roleId,
-                    avatar: data.avatar,
+                    avatar: urlAvatar,
                 })
                 userData.errCode = 0
                 userData.errMessage = 'Create new user success'

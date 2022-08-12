@@ -58,9 +58,24 @@ let handleUpdateSong = async (req, res) => {
     }
 }
 
+let handleGetRecentSongs = async (req, res) => {
+    let songData = await songService.getRecentSongs()
+    if (songData.errCode !== 0) {
+        return res.status(500).json({
+            errCode: songData.errCode,
+            message: songData.errMessage,
+        })
+    }
+    return res.status(200).json({
+        errCode: songData.errCode,
+        message: songData.errMessage,
+        songs: songData.songs
+    })
+}
 module.exports = {
     handleGetAllSongs: handleGetAllSongs,
     handleCreateNewSong: handleCreateNewSong,
     handleDeleteSong: handleDeleteSong,
-    handleUpdateSong: handleUpdateSong
+    handleUpdateSong: handleUpdateSong,
+    handleGetRecentSongs: handleGetRecentSongs,
 }

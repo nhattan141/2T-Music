@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       avatar: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

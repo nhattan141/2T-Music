@@ -2,12 +2,39 @@ import express from 'express';
 import homeController from '../controllers/homeController'
 import userController from '../controllers/userController'
 import songController from '../controllers/songController'
+import multer from 'multer'
+import path from 'path'
+
+var appRoot = require('app-root-path')
 let router = express.Router();
 
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, appRoot + '/src/public/images/');
+    },
+
+    // By default, multer removes file extensions so let's add them back
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const imageFilter = function (req, file, cb) {
+    // Accept images only
+    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+        req.fileValidationError = 'Only image files are allowed!';
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+
+let upload = multer({ storage: storage, fileFilter: imageFilter })
 let initWebRoutes = (app) => {
     router.get('/', homeController.getHomePage)
 
     router.get('/explore', homeController.getExplorePage)
+    router.post('/upload-profile-pic', homeController.handleUploadFile)
 
     //router login/signup
     router.post('/api/login', userController.handleLogin)
@@ -15,7 +42,7 @@ let initWebRoutes = (app) => {
 
     //router User
     router.get('/api/get-all-users', userController.handleGetAllUsers)
-    router.post('/api/create-new-user', userController.handleCreateNewUser)
+    router.post('/api/create-new-user', upload.single('avatar'), userController.handleCreateNewUser)
     router.delete('/api/delete-user', userController.handleDeleteUser)
     router.put('/api/update-user', userController.handleUpdateUser)
 
@@ -24,6 +51,7 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-song', songController.handleCreateNewSong)
     router.delete('/api/delete-song', songController.handleDeleteSong)
     router.put('/api/update-song', songController.handleUpdateSong)
+    router.get('/api/get-recent-songs', songController.handleGetRecentSongs)
 
 
     return app.use("/", router)

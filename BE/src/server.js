@@ -10,6 +10,7 @@ require('dotenv').config();
 let port = process.env.PORT || 8080
 
 let app = express();
+// app.use(express.static("./src/public"));
 // app.use(cors())
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -32,10 +33,10 @@ app.use(function (req, res, next) {
 });
 
 //config app
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 viewEngine(app)
 initWebRoutes(app)
