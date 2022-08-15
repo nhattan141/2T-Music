@@ -144,7 +144,7 @@ let handleDeleteUser = (data) => {
     })
 }
 
-let handleUpdateUser = (data) => {
+let handleUpdateUser = (data, urlAvatar) => {
     return new Promise(async (resolve, reject) => {
         try {
             let userData = {}
@@ -161,9 +161,9 @@ let handleUpdateUser = (data) => {
                     user.lastName = data.lastName
                     user.gender = data.gender == 0 ? false : true
                     user.roleId = data.roleId
-                    if (data.avatar) {
-                        user.avatar = data.avatar
-                    }
+
+                    user.avatar = urlAvatar
+
                     await user.save()
 
                     userData.errCode = 0

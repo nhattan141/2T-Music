@@ -1,7 +1,8 @@
 import { request, response } from 'express'
 import db from '../models/index'
 import userService from '../services/userService'
-import multer from 'multer'
+import path from 'path'
+var appRoot = require('app-root-path')
 
 let handleLogin = async (req, res) => {
     let email = req.body.email
@@ -64,42 +65,38 @@ let handleGetAllUsers = async (req, res) => {
     })
 }
 
-const upload = multer().single('avatar');
-
 let handleCreateNewUser = async (req, res) => {
-    let avatar = req.file
-    let urlAvatar = `http://127.0.0.1:8887/images/${avatar.filename}`
-    let data = req.body
-    console.log(avatar)
-    let userData = await userService.handleCreateNewUser(data, urlAvatar)
-    console.log(req.file)
-    upload(req, res, function (err) {
-        // req.file contains information of uploaded file
-        // req.body contains information of text fields, if there were any
 
-        if (req.fileValidationError) {
-            return res.send(req.fileValidationError);
-        }
-        else if (!req.file) {
-            return res.send('Please select an image to upload');
-        }
-        else if (err instanceof multer.MulterError) {
-            return res.send(err);
-        }
-
-        // Display uploaded image for user validation
-        // res.send(`You have uploaded this image: <hr/>
-        // <img src="http://127.0.0.1:8887/images/${req.file.filename}" width="500" />
-        // <hr /><a href="./">Upload another image</a>`);
-
-        return res.status(200).json({
-            errCode: userData.errCode,
-            message: userData.errMessage,
-            // data,
-            // avatar,
-            // urlAvatar
+    if (!req.files) {
+        return res.status(500).json({
+            errCode: 1,
+            message: "Missing file"
         })
-    });
+    }
+
+    //Use the name of the input field (i.e. "avatar") 
+    //to retrieve the uploaded file
+    let avatar = req.files.avatar;
+    let info = req.body
+    var file_name = new Date().getTime() + '_' + avatar.name
+    let urlAvatar = `http://127.0.0.1:8887/images/${file_name}`
+    //Use the mv() method to place the file in upload directory (i.e. "uploads")
+    avatar.mv(appRoot + '/src/public/images/' + file_name);
+
+    let userData = await userService.handleCreateNewUser(info, urlAvatar);
+    //send response
+
+    return res.status(200).json({
+        errCode: userData.errCode,
+        message: userData.errMessage,
+        data: {
+            name: avatar.name,
+            mimetype: avatar.mimetype,
+            size: avatar.size
+        },
+        info,
+        urlAvatar
+    })
 
 }
 
@@ -120,7 +117,23 @@ let handleDeleteUser = async (req, res) => {
 }
 
 let handleUpdateUser = async (req, res) => {
-    let userData = await userService.handleUpdateUser(req.body)
+    let urlAvatar = ''
+    if (!req.files) {
+        urlAvatar = req.body.avatar
+    } else {
+
+        //Use the name of the input field (i.e. "avatar") 
+        //to retrieve the uploaded file
+        let avatar = req.files.avatar;
+        var file_name = new Date().getTime() + '_' + avatar.name
+        urlAvatar = `http://127.0.0.1:8887/images/${file_name}`
+        //Use the mv() method to place the file in upload directory (i.e. "uploads")
+        avatar.mv(appRoot + '/src/public/images/' + file_name);
+    }
+    let info = req.body
+
+
+    let userData = await userService.handleUpdateUser(info, urlAvatar)
     if (userData.errCode !== 0) {
         return res.status(500).json({
             errCode: userData.errCode,
@@ -129,30 +142,13 @@ let handleUpdateUser = async (req, res) => {
     } else {
         return res.status(200).json({
             errCode: userData.errCode,
-            message: userData.errMessage
+            message: userData.errMessage,
+            info,
+            urlAvatar
         })
     }
 }
 
-let handleUploadFile = async (req, res) => {
-    upload(req, res, function (err) {
-        // req.file contains information of uploaded file
-        // req.body contains information of text fields, if there were any
-
-        if (req.fileValidationError) {
-            return res.send(req.fileValidationError);
-        }
-        else if (!req.file) {
-            return res.send('Please select an image to upload');
-        }
-        else if (err instanceof multer.MulterError) {
-            return res.send(err);
-        }
-        else if (err) {
-            return res.send(err);
-        }
-    });
-}
 module.exports = {
     handleLogin: handleLogin,
     handleSignup: handleSignup,

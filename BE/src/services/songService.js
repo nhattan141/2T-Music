@@ -38,7 +38,7 @@ let checkSongName = (songName) => {
     })
 }
 
-let createNewSong = (data) => {
+let createNewSong = (data, urlImg, urlFile) => {
     return new Promise(async (resolve, reject) => {
         try {
             let songData = {}
@@ -48,8 +48,8 @@ let createNewSong = (data) => {
                     songName: data.songName,
                     singer: data.singer,
                     lyrics: data.lyrics,
-                    img: data.img,
-                    file: data.file,
+                    img: urlImg,
+                    file: urlFile,
                     isRecent: data.isRecent,
                     isTop3: data.isTop3,
                     isNewRelease: data.isNewRelease,
@@ -95,7 +95,7 @@ let deleteSong = (songId) => {
     })
 }
 
-let updateSong = (data) => {
+let updateSong = (data, urlImg, urlFile) => {
     return new Promise(async (resolve, reject) => {
         try {
             let songData = {}
@@ -110,11 +110,11 @@ let updateSong = (data) => {
                     song.songName = data.songName
                     song.singer = data.singer
                     song.lyrics = data.lyrics
-                    if (data.img) {
-                        song.img = data.img
+                    if (urlImg) {
+                        song.img = urlImg
                     }
-                    if (data.file) {
-                        song.file = data.file
+                    if (urlFile) {
+                        song.file = urlFile
                     }
                     song.isRecent = data.isRecent
                     song.isTop3 = data.isTop3

@@ -63,9 +63,43 @@ let handleUploadFile = async (req, res) => {
     });
 }
 
+let handleUpload = async (req, res) => {
+    try {
+        if(!req.files) {
+            res.send({
+                status: 500,
+                message: 'No file uploaded'
+            });
+        } else {
+            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+            let avatar = req.files.avatar;
+            let info = req.body
+            let urlAvatar = `http://127.0.0.1:8887/images/${avatar.name}`
+            var file_name = new Date().getTime() +'_'+avatar.name
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            avatar.mv(appRoot + '/src/public/images/' + file_name);
+
+            //send response
+            res.send({
+                status: 200,
+                message: 'File is uploaded',
+                data: {
+                    name: avatar.name,
+                    mimetype: avatar.mimetype,
+                    size: avatar.size
+                },
+                info,
+                urlAvatar
+            });
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
 
 module.exports = {
     getHomePage: getHomePage,
     getExplorePage: getExplorePage,
-    handleUploadFile: handleUploadFile
+    handleUploadFile: handleUploadFile,
+    handleUpload: handleUpload,
 }

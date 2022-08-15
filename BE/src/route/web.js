@@ -35,6 +35,7 @@ let initWebRoutes = (app) => {
 
     router.get('/explore', homeController.getExplorePage)
     router.post('/upload-profile-pic', homeController.handleUploadFile)
+    router.post('/upload', homeController.handleUpload)
 
     //router login/signup
     router.post('/api/login', userController.handleLogin)
@@ -42,7 +43,7 @@ let initWebRoutes = (app) => {
 
     //router User
     router.get('/api/get-all-users', userController.handleGetAllUsers)
-    router.post('/api/create-new-user', upload.single('avatar'), userController.handleCreateNewUser)
+    router.post('/api/create-new-user', userController.handleCreateNewUser)
     router.delete('/api/delete-user', userController.handleDeleteUser)
     router.put('/api/update-user', userController.handleUpdateUser)
 
