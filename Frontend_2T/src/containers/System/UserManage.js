@@ -7,7 +7,7 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import * as actions from '../../store/actions/index'
 import { ToastContainer, toast } from 'react-toastify';
-import { CommonUtils } from '../../utils'
+import { CommonUtils, dateFormat } from '../../utils'
 import logo from '../../assets/images/neon_2.png'
 import TableMangeUser from './TableMangeUser';
 class UserManage extends Component {
@@ -24,7 +24,7 @@ class UserManage extends Component {
             gender: 1,
             roleId: 1,
             avatar: '',
-            previewAvatar: 'http://127.0.0.1:8887/images/profile_pic-1660225668467.jpg',
+            previewAvatar: logo,
             isOpen: false,
             isUpdate: false
         }
@@ -95,24 +95,26 @@ class UserManage extends Component {
     }
 
     handleSubmit = () => {
+
         let isValid = this.checkValidate()
         if (isValid === false) return
-        this.props.createNewUser({
-            email: this.state.email,
-            password: this.state.password,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            gender: this.state.gender,
-            roleId: this.state.roleId,
-            avatar: this.state.avatar,
-        })
+        const form_data = new FormData();
+        form_data.append('email', this.state.email)
+        form_data.append('password', this.state.password);
+        form_data.append('firstName', this.state.firstName);
+        form_data.append('lastName', this.state.lastName);
+        form_data.append('gender', this.state.gender);
+        form_data.append('roleId', this.state.roleId);
+        form_data.append('avatar', this.state.avatar);
+
+        this.props.createNewUser(form_data)
     }
 
     handleOpenUpdate = (user) => {
-        let imageBase64 = ''
-        if (user.avatar) {
-            imageBase64 = new Buffer(user.avatar, 'base64').toString('binary')
-        }
+        // let imageBase64 = ''
+        // if (user.avatar) {
+        //     imageBase64 = new Buffer(user.avatar, 'base64').toString('binary')
+        // }
         this.setState({
             isUpdate: true,
             id: user.id,
@@ -122,7 +124,8 @@ class UserManage extends Component {
             lastName: user.lastName,
             gender: user.gender,
             roleId: user.roleId,
-            previewAvatar: imageBase64
+            avatar: user.avatar,
+            previewAvatar: user.avatar
         })
         console.log('State user update: ', this.state);
     }
@@ -147,7 +150,16 @@ class UserManage extends Component {
     }
 
     handleUpdateUser = (user) => {
-        this.props.updateUser(user)
+        const form_data = new FormData();
+        form_data.append('id', user.id);
+        form_data.append('email', user.email)
+        form_data.append('password', user.password);
+        form_data.append('firstName', user.firstName);
+        form_data.append('lastName', user.lastName);
+        form_data.append('gender', user.gender);
+        form_data.append('roleId', user.roleId);
+        form_data.append('avatar', user.avatar);
+        this.props.updateUser(form_data)
         this.emptyFill()
     }
 
@@ -163,99 +175,97 @@ class UserManage extends Component {
             <div className="user-manage-container">
                 <div className="user-manage-content">
                     <div className="user-manage-title">Manage User</div>
-                    <form method='post'>
-                        <div className="user-manage-form">
-                            <div className="input-container">
-                                <label>Email</label>
-                                <input type="text"
-                                    name='email'
-                                    value={email}
-                                    disabled={this.state.isUpdate ? true : false}
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'email') }}
-                                />
-                            </div>
-                            <div className="input-container">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    name='password'
-                                    value={password}
-                                    disabled={this.state.isUpdate ? true : false}
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'password') }}
-                                />
-                            </div>
-                            <div className="input-container">
-                                <label>Firstname</label>
-                                <input
-                                    type="text"
-                                    name='firstName'
-                                    value={firstName}
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'firstName') }}
-                                />
-                            </div>
-                            <div className="input-container">
-                                <label>Lastname</label>
-                                <input
-                                    type="text"
-                                    name='lastName'
-                                    value={lastName}
+                    <div className="user-manage-form">
+                        <div className="input-container">
+                            <label>Email</label>
+                            <input type="text"
+                                name='email'
+                                value={email}
+                                disabled={this.state.isUpdate ? true : false}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'email') }}
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                name='password'
+                                value={password}
+                                disabled={this.state.isUpdate ? true : false}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'password') }}
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Firstname</label>
+                            <input
+                                type="text"
+                                name='firstName'
+                                value={firstName}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'firstName') }}
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Lastname</label>
+                            <input
+                                type="text"
+                                name='lastName'
+                                value={lastName}
 
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'lastName') }}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'lastName') }}
 
-                                />
-                            </div>
-                            <div className="input-container">
-                                <label>Gender</label>
-                                <select name="gender" value={gender}
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'gender') }}
-                                >
-                                    <option value="1" >Male</option>
-                                    <option value="0">Female</option>
-                                </select>
-                            </div>
-                            <div className="input-container">
-                                <label>Role</label>
-                                <select name="roleId" value={roleId}
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'roleId') }}
-                                >
-                                    <option value="1">Admin</option>
-                                    <option value="0">User</option>
-                                </select>
-                            </div>
-                            <div className="input-container">
-                                <label>Avatar</label>
-                                <input hidden={true}
-                                    type="file"
-                                    name='avatar'
-                                    id='avatar'
-                                    onChange={(event) => { this.handleOnchangeInput(event, 'avatar') }}
-                                />
-                                <label htmlFor="avatar" className="input-container avatar-btn">Upload</label>
-                                <div className="show-img">
-                                    <img src={this.state.previewAvatar} alt='avatar'
-                                        onClick={() => this.handleOpenImage()}
-                                    ></img>
-                                </div>
+                            />
+                        </div>
+                        <div className="input-container">
+                            <label>Gender</label>
+                            <select name="gender" value={gender}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'gender') }}
+                            >
+                                <option value="1" >Male</option>
+                                <option value="0">Female</option>
+                            </select>
+                        </div>
+                        <div className="input-container">
+                            <label>Role</label>
+                            <select name="roleId" value={roleId}
+                                onChange={(event) => { this.handleOnchangeInput(event, 'roleId') }}
+                            >
+                                <option value="1">Admin</option>
+                                <option value="0">User</option>
+                            </select>
+                        </div>
+                        <div className="input-container">
+                            <label>Avatar</label>
+                            <input hidden={true}
+                                type="file"
+                                name='avatar'
+                                id='avatar'
+                                onChange={(event) => { this.handleOnchangeInput(event, 'avatar') }}
+                            />
+                            <label htmlFor="avatar" className="input-container avatar-btn">Upload</label>
+                            <div className="show-img">
+                                <img src={this.state.previewAvatar} alt='avatar'
+                                    onClick={() => this.handleOpenImage()}
+                                ></img>
                             </div>
                         </div>
-                        <div className="btn-save">
-                            <div className="btn-save-content">
-                                {
-                                    this.state.isUpdate === false ?
-                                        <button type="button"
-                                            onClick={() => this.handleSubmit()}
-                                        >Add new</button> :
-                                        <button type="button"
-                                            onClick={() => this.handleUpdateUser(this.state)}
-                                        >Update</button>
-                                }
-                                <button type="button" className='btn-cancel'
-                                    onClick={() => this.emptyFill()}
-                                >Cancel</button>
+                    </div>
+                    <div className="btn-save">
+                        <div className="btn-save-content">
+                            {
+                                this.state.isUpdate === false ?
+                                    <button type="button"
+                                        onClick={() => this.handleSubmit()}
+                                    >Add new</button> :
+                                    <button type="button"
+                                        onClick={() => this.handleUpdateUser(this.state)}
+                                    >Update</button>
+                            }
+                            <button type="button" className='btn-cancel'
+                                onClick={() => this.emptyFill()}
+                            >Cancel</button>
 
-                            </div>
                         </div>
-                    </form>
+                    </div>
                     <TableMangeUser
                         handleOpenUpdate={this.handleOpenUpdate}
                     />

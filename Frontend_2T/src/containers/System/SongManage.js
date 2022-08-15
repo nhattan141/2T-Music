@@ -66,12 +66,10 @@ class SongManage extends Component {
             let data = e.target.files
             let file = data[0]
             if (file) {
-                let base64 = await CommonUtils.getBase64(file)
-                console.log('base64 img', base64);
                 let onjectUrl = URL.createObjectURL(file)
                 this.setState({
                     previewImage: onjectUrl,
-                    img: base64
+                    img: file
                 })
             }
         } else {
@@ -79,12 +77,10 @@ class SongManage extends Component {
                 let data = e.target.files
                 let file = data[0]
                 if (file) {
-                    let base64 = await CommonUtils.getBase64(file)
-                    console.log('base64 file', base64);
                     let onjectUrl = URL.createObjectURL(file)
                     this.setState({
                         previewAudio: onjectUrl,
-                        file: base64
+                        file: file
                     })
                 }
             }
@@ -141,27 +137,29 @@ class SongManage extends Component {
     handleSubmit = () => {
         let isValid = this.checkValidate()
         if (isValid === false) return
-        this.props.createNewSong({
-            songName: this.state.songName,
-            singer: this.state.singer,
-            lyrics: this.state.lyrics,
-            img: this.state.img,
-            file: this.state.file,
-            isRecent: this.state.isRecent,
-            isTop3: this.state.isTop3,
-            isNewRelease: this.state.isNewRelease,
-        })
+
+        const form_data = new FormData();
+        form_data.append('songName', this.state.songName)
+        form_data.append('singer', this.state.singer);
+        form_data.append('lyrics', this.state.lyrics);
+        form_data.append('img', this.state.img);
+        form_data.append('file', this.state.file);
+        form_data.append('isRecent', this.state.isRecent);
+        form_data.append('isTop3', this.state.isTop3);
+        form_data.append('isNewRelease', this.state.isNewRelease)
+        this.props.createNewSong(form_data)
     }
 
     handleOpenUpdate = (song) => {
-        let imageBase64 = ''
-        if (song.img) {
-            imageBase64 = new Buffer(song.img, 'base64').toString('binary')
-        }
-        let audioBase64 = ''
-        if (song.file) {
-            audioBase64 = new Buffer(song.file, 'base64').toString('binary')
-        }
+        // let imageBase64 = ''
+        // if (song.img) {
+        //     imageBase64 = new Buffer(song.img, 'base64').toString('binary')
+        // }
+        // let audioBase64 = ''
+        // if (song.file) {
+        //     audioBase64 = new Buffer(song.file, 'base64').toString('binary')
+        // }
+
         this.setState({
             isUpdate: true,
             id: song.id,
@@ -171,14 +169,24 @@ class SongManage extends Component {
             isRecent: song.isRecent,
             isTop3: song.isTop3,
             isNewRelease: song.isNewRelease,
-            previewImage: imageBase64,
-            previewAudio: audioBase64,
+            previewImage: song.img,
+            previewAudio: song.file,
         })
         console.log('State user update: ', this.state);
     }
 
     handleUpdateSong = (data) => {
-        this.props.updateSong(data)
+        const form_data = new FormData();
+        form_data.append('id', data.id);
+        form_data.append('songName', data.songName)
+        form_data.append('singer', data.singer);
+        form_data.append('lyrics', data.lyrics);
+        form_data.append('isRecent', data.isRecent);
+        form_data.append('isTop3', data.isTop3);
+        form_data.append('isNewRelease', data.isNewRelease);
+        form_data.append('img', data.img);
+        form_data.append('file', data.file);
+        this.props.updateSong(form_data)
         this.emptyFill()
     }
 

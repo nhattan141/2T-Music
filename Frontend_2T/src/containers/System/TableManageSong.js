@@ -94,21 +94,13 @@ class UserManage extends Component {
                                         </td>
                                         <td>
                                             <div className="song-avatar">
-                                                <img
-                                                    src={
-                                                        new Buffer(song.img, 'base64').toString('binary')
-                                                    }
-                                                >
+                                                <img src={song.img}>
                                                 </img>
                                             </div>
                                         </td>
                                         <td>
                                             <div className="song-audio">
-                                                <audio controls
-                                                    src={
-                                                        new Buffer(song.file, 'base64').toString('binary')
-                                                    }
-                                                >
+                                                <audio controls src={song.file} >
                                                 </audio>
                                             </div>
                                         </td>

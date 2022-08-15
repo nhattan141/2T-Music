@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 export const createNewUser = (data) => {
     return async (dispatch, getState) => {
         try {
+
             let res = await handleCreateNewUser(data)
             if (res && res.errCode === 0) {
                 dispatch(addUserSuccess())
@@ -27,7 +28,7 @@ export const createNewUser = (data) => {
     }
 }
 
-export const addUserSuccess = (userInfo) => ({
+export const addUserSuccess = () => ({
     type: actionTypes.ADD_USER_SUCCESS,
 });
 
