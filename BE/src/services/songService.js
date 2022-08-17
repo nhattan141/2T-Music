@@ -144,17 +144,18 @@ let getRecentSongs = () => {
         try {
             let songData = {}
             let songs = await db.Song.findAll({
-                where: { isTop3: '1' },
+                where: { isRecent: '1' },
+                limit: 6,
                 raw: true
             })
 
             if (songs) {
                 songData.errCode = 0
-                songData.errMessage = 'Get top song successfully'
+                songData.errMessage = 'Get recent songs successfully'
                 songData.songs = songs
             } else {
                 songData.errCode = 1
-                songData.errMessage = 'Get top song fail'
+                songData.errMessage = 'Get recent song fail'
             }
             resolve(songData)
         } catch (e) {
@@ -162,10 +163,64 @@ let getRecentSongs = () => {
         }
     })
 }
+
+let getTop3Songs = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let songData = {}
+            let songs = await db.Song.findAll({
+                where: { isTop3: '1' },
+                limit: 3,
+                raw: true
+            })
+
+            if (songs) {
+                songData.errCode = 0
+                songData.errMessage = 'Get top 3 songs successfully'
+                songData.songs = songs
+            } else {
+                songData.errCode = 1
+                songData.errMessage = 'Get top 3 song fail'
+            }
+            resolve(songData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let getNewReleaseSongs = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let songData = {}
+            let songs = await db.Song.findAll({
+                where: { isNewRelease: '1' },
+                limit: 6,
+                raw: true
+            })
+
+            if (songs) {
+                songData.errCode = 0
+                songData.errMessage = 'Get new release songs successfully'
+                songData.songs = songs
+            } else {
+                songData.errCode = 1
+                songData.errMessage = 'Get new release songs fail'
+            }
+
+            resolve(songData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     getAllSongs: getAllSongs,
     createNewSong: createNewSong,
     deleteSong: deleteSong,
     updateSong: updateSong,
     getRecentSongs: getRecentSongs,
+    getTop3Songs: getTop3Songs,
+    getNewReleaseSongs: getNewReleaseSongs,
 }

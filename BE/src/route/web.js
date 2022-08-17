@@ -52,7 +52,10 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-song', songController.handleCreateNewSong)
     router.delete('/api/delete-song', songController.handleDeleteSong)
     router.put('/api/update-song', songController.handleUpdateSong)
+
     router.get('/api/get-recent-songs', songController.handleGetRecentSongs)
+    router.get('/api/get-top3-songs', songController.handleGetTop3Songs)
+    router.get('/api/get-new-release-songs', songController.handleGetNewReleaseSongs)
 
 
     return app.use("/", router)

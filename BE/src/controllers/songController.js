@@ -79,7 +79,7 @@ let handleDeleteSong = async (req, res) => {
 let handleUpdateSong = async (req, res) => {
     let urlImg = ``
     let urlFile = ``
-    if (!req.files.img) {
+    if (!req.files || !req.files.img) {
         urlImg = req.body.img
     } else {
         let img = req.files.img;
@@ -90,7 +90,7 @@ let handleUpdateSong = async (req, res) => {
         //Use the mv() method to place the file in upload directory (i.e. "uploads")
         img.mv(appRoot + '/src/public/images/' + file_img_name);
     }
-    if (!req.files.file) {
+    if (!req.files || !req.files.file) {
         urlFile = req.body.file
     } else {
         let file = req.files.file;
@@ -134,10 +134,43 @@ let handleGetRecentSongs = async (req, res) => {
         songs: songData.songs
     })
 }
+
+let handleGetTop3Songs = async (req, res) => {
+    let songData = await songService.getTop3Songs()
+    if (songData.errCode !== 0) {
+        return res.status(500).json({
+            errCode: songData.errCode,
+            message: songData.errMessage,
+        })
+    }
+    return res.status(200).json({
+        errCode: songData.errCode,
+        message: songData.errMessage,
+        songs: songData.songs
+    })
+}
+
+let handleGetNewReleaseSongs = async (req, res) => {
+    let songData = await songService.getNewReleaseSongs()
+    if (songData.errCode !== 0) {
+        return res.status(500).json({
+            errCode: songData.errCode,
+            message: songData.errMessage
+        })
+    }
+    return res.status(200).json({
+        errCode: songData.errCode,
+        message: songData.errMessage,
+        songs: songData.songs
+    })
+}
+
 module.exports = {
     handleGetAllSongs: handleGetAllSongs,
     handleCreateNewSong: handleCreateNewSong,
     handleDeleteSong: handleDeleteSong,
     handleUpdateSong: handleUpdateSong,
     handleGetRecentSongs: handleGetRecentSongs,
+    handleGetTop3Songs: handleGetTop3Songs,
+    handleGetNewReleaseSongs: handleGetNewReleaseSongs,
 }
