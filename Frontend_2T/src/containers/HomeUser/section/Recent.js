@@ -1,13 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Recent.scss'
-import poster1 from '../../../assets/images/poster_1.jpg'
+import * as actions from '../../../store/actions/index'
 
 
 class Recent extends Component {
 
-    render() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            songsArr: [],
+        }
+    }
 
+    componentDidMount() {
+        this.props.getRecentSongs()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.recentSongs !== this.props.recentSongs) {
+            this.setState({
+                songsArr: this.props.recentSongs
+            })
+        }
+    }
+
+    render() {
+        // console.log("songsArr: ", this.props.recentSongs);
+        // console.log("songsArr state: ", this.state.songsArr);
+
+        let { songsArr } = this.state
         return (
             <div className='recent-container'>
                 <div className='recent-content'>
@@ -19,42 +41,17 @@ class Recent extends Component {
                         </div>
                     </div>
                     <div className='recent-body'>
-                        <div className='recent-child'>
-                            <img src={poster1} />
-                            <div className="middle">
-                                <i className="far fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div className='recent-child'>
-                            <img src={poster1} />
-                            <div className="middle">
-                                <i className="far fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div className='recent-child'>
-                            <img src={poster1} />
-                            <div className="middle">
-                                <i className="far fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div className='recent-child'>
-                            <img src={poster1} />
-                            <div className="middle">
-                                <i className="far fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div className='recent-child'>
-                            <img src={poster1} />
-                            <div className="middle">
-                                <i className="far fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div className='recent-child'>
-                            <img src={poster1} />
-                            <div className="middle">
-                                <i className="far fa-play-circle"></i>
-                            </div>
-                        </div>
+                        {
+                            songsArr && songsArr.length > 0 &&
+                            songsArr.map((song, index) => (
+                                <div className='recent-child' key={index}>
+                                    <img src={song.img} />
+                                    <div className="middle">
+                                        <i className="far fa-play-circle"></i>
+                                    </div>
+                                </div>
+                            ))
+                        }
                     </div>
 
                 </div>
@@ -66,12 +63,14 @@ class Recent extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: state.user.isLoggedIn
+        isLoggedIn: state.user.isLoggedIn,
+        recentSongs: state.song.recentSongs,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getRecentSongs: () => dispatch(actions.getRecentSongs())
     };
 };
 
