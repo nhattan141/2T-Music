@@ -21,10 +21,16 @@ const userPersistConfig = {
     whitelist: ['isLoggedIn', 'userInfo']
 };
 
+const songPersistConfig = {
+    ...persistCommonConfig,
+    key: 'song',
+    whitelist: ['songPlay']
+}
+
 export default (history) => combineReducers({
     router: connectRouter(history),
     user: persistReducer(userPersistConfig, userReducer),
     app: appReducer,
     admin: adminReducer,
-    song: songReducer
+    song: persistReducer(songPersistConfig, songReducer),
 })

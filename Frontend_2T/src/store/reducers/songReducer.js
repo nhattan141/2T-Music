@@ -1,9 +1,12 @@
 import actionTypes from '../actions/actionTypes';
+import poster1 from '../../assets/images/poster_1.jpg'
+import song1 from '../../assets/audios/song_1.mp3'
 
 const initialState = {
     recentSongs: [],
     newReleaseSongs: [],
-    top3Songs: []
+    top3Songs: [],
+    songPlay: {}
 }
 
 const appReducer = (state = initialState, action) => {
@@ -37,6 +40,16 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 top3Songs: []
+            }
+        case actionTypes.GET_PLAY_SONGS_SUCCESS:
+            return {
+                ...state,
+                songPlay: action.song
+            }
+        case actionTypes.GET_PLAY_SONGS_FAIL:
+            return {
+                ...state,
+                songPlay: {}
             }
         default:
             return state;

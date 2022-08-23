@@ -25,6 +25,10 @@ class Recent extends Component {
         }
     }
 
+    handleGetSongToPlay = (song) => {
+        this.props.getSongToPlay(song)
+    }
+
     render() {
         // console.log("songsArr: ", this.props.recentSongs);
         // console.log("songsArr state: ", this.state.songsArr);
@@ -44,7 +48,9 @@ class Recent extends Component {
                         {
                             songsArr && songsArr.length > 0 &&
                             songsArr.map((song, index) => (
-                                <div className='recent-child' key={index}>
+                                <div className='recent-child' key={index}
+                                    onClick={() => this.handleGetSongToPlay(song)}
+                                >
                                     <img src={song.img} />
                                     <div className="middle">
                                         <i className="far fa-play-circle"></i>
@@ -65,12 +71,14 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         recentSongs: state.song.recentSongs,
+        songPlay: state.song.songPlay
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getRecentSongs: () => dispatch(actions.getRecentSongs())
+        getRecentSongs: () => dispatch(actions.getRecentSongs()),
+        getSongToPlay: (song) => dispatch(actions.getSongToPlay(song))
     };
 };
 

@@ -42,6 +42,9 @@ const actionTypes = Object.freeze({
     GET_TOP3_SONGS_SUCCESS: 'GET_TOP3_SONGS_SUCCESS',
     GET_TOP3_SONGS_FAIL: 'GET_TOP3_SONGS_FAIL',
 
+    //get song to play
+    GET_PLAY_SONGS_SUCCESS: 'GET_PLAY_SONGS_SUCCESS',
+    GET_PLAY_SONGS_FAIL: 'GET_PLAY_SONGS_FAIL',
 })
 
 export default actionTypes;

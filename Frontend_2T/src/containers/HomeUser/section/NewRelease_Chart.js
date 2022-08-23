@@ -32,6 +32,10 @@ class NewRleaseChart extends Component {
         }
     }
 
+    handleGetSongToPlay = (song) => {
+        this.props.getSongToPlay(song)
+    }
+
     render() {
         console.log(this.state.top3Songs);
         let { newReleaseSongs, top3Songs } = this.state
@@ -51,7 +55,9 @@ class NewRleaseChart extends Component {
                                 {
                                     newReleaseSongs && newReleaseSongs.length > 0 &&
                                     newReleaseSongs.map((song, index) => (
-                                        <div className='new-release-child' key={index}>
+                                        <div className='new-release-child' key={index}
+                                            onClick={() => this.handleGetSongToPlay(song)}
+                                        >
                                             <div className='child-content'>
                                                 <div className='child-left'>
                                                     <img src={song.img} />
@@ -85,7 +91,9 @@ class NewRleaseChart extends Component {
                                 {
                                     top3Songs && top3Songs.length > 0 &&
                                     top3Songs.map((song, index) => (
-                                        <div className='chart-child'>
+                                        <div className='chart-child' key={index}
+                                            onClick={() => this.handleGetSongToPlay(song)}
+                                        >
                                             <div className='child-content'>
                                                 <div className='child-left'>
                                                     <i className="fas fa-crown"></i>
@@ -115,14 +123,16 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         newReleaseSongs: state.song.newReleaseSongs,
-        top3Songs: state.song.top3Songs
+        top3Songs: state.song.top3Songs,
+        songPlay: state.song.songPlay
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getNewReleaseSongs: () => dispatch(actions.getNewReleaseSongs()),
-        getTop3Songs: () => dispatch(actions.getTop3Songs())
+        getTop3Songs: () => dispatch(actions.getTop3Songs()),
+        getSongToPlay: (song) => dispatch(actions.getSongToPlay(song))
     };
 };
 

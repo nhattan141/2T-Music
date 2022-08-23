@@ -28,6 +28,10 @@ class HomeSlider extends Component {
         }
     }
 
+    handleGetSongToPlay = (song) => {
+        this.props.getSongToPlay(song)
+    }
+
     render() {
 
         let settings = {
@@ -45,7 +49,9 @@ class HomeSlider extends Component {
                         {
                             songsArr && songsArr.length > 0 &&
                             songsArr.map((song, index) => (
-                                <div className='slider-img' key={index}>
+                                <div className='slider-img' key={index}
+                                    onClick={() => this.handleGetSongToPlay(song)}
+                                >
                                     <img src={song.img} />
                                 </div>
                             ))
@@ -62,12 +68,14 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         recentSongs: state.song.recentSongs,
+        songPlay: state.song.songPlay
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getRecentSongs: () => dispatch(actions.getRecentSongs())
+        getRecentSongs: () => dispatch(actions.getRecentSongs()),
+        getSongToPlay: (song) => dispatch(actions.getSongToPlay(song))
     };
 };
 

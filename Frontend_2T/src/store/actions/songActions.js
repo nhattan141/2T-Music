@@ -81,3 +81,23 @@ export const getTop3SongsSuccess = (data) => ({
 export const getTop3SongsFail = () => ({
     type: actionTypes.GET_TOP3_SONGS_FAIL
 })
+
+export const getSongToPlay = (song) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(getSongToPlaySuccess(song))
+        } catch (e) {
+            console.log(e);
+            dispatch(getSongToPlayFail())
+        }
+    }
+}
+
+export const getSongToPlaySuccess = (song) => ({
+    type: actionTypes.GET_PLAY_SONGS_SUCCESS,
+    song: song
+})
+
+export const getSongToPlayFail = () => ({
+    type: actionTypes.GET_PLAY_SONGS_FAIL
+})
