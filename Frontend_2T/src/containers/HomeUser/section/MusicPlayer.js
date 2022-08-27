@@ -4,6 +4,7 @@ import './MusicPlayer.scss'
 import poster1 from '../../../assets/images/poster_1.jpg'
 import song1 from '../../../assets/audios/song_1.mp3'
 import * as actions from '../../../store/actions'
+import ModalLyric from './ModalLyric';
 
 class MusicPlayer extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class MusicPlayer extends Component {
             isRepeat: false,
             currentSong: {},
             songsArr: [],
+            isOpen: false,
         }
     }
 
@@ -167,99 +169,119 @@ class MusicPlayer extends Component {
         }
     }
 
+    toggleLyricModal = () => {
+        let lyrics = document.querySelector('.lyrics')
 
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
+
+        !this.state.isOpen ?
+            lyrics.classList.add('active') :
+            lyrics.classList.remove('active')
+    }
     render() {
         console.log('list sonmg: ', this.state.songsArr);
         console.log('song play: ', this.state.currentSong);
         let { songsArr, currentSong } = this.state
         return (
-            <div className='music-player-container'>
-                <div className='music-player-content'>
-                    <div className='music-player-left'>
-                        <div className='music-player-disk'>
-                            <img className='music-player-img'
-                                src={
-                                    currentSong ?
-                                        currentSong.img :
-                                        songsArr[0].img
-                                }
-                            />
-                        </div>
-                        <div className='music-player-song'>
-                            <div className='song-name'>
-                                {
-                                    currentSong ?
-                                        currentSong.songName :
-                                        songsArr[0].songName
-                                }
-                            </div>
-                            <div className='artiss-name'>
-                                {
-                                    currentSong ?
-                                        currentSong.singer :
-                                        songsArr[0].singer
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div className='music-player-right'>
-                        <div className='music-player-controls'>
-                            <div className='control-child'>
-                                <button className='btn-control rebeat'
-                                    onClick={() => { this.handleRepeat() }}
-                                >
-                                    <i className="fas fa-undo"></i>
-                                </button>
-                                <button className='btn-control'
-                                    onClick={() => { this.preSong() }}
-                                >
-                                    <i className="fas fa-backward"></i>
-                                </button>
-                                <button className="player-button" onClick={() => this.toggleAdudio()}>
-                                    {
-                                        !this.state.isPlaying ?
-                                            <i className="fas fa-play"></i> :
-                                            <i className="fas fa-pause"></i>
+            <>
+                <ModalLyric
+                    isOpen={this.state.isOpen}
+                    currentSong={this.state.currentSong}
+                    toggleLyricModal={this.toggleLyricModal}
+                />
+                <div className='music-player-container'>
+                    <div className='music-player-content'>
+                        <div className='music-player-left'>
+                            <div className='music-player-disk'>
+                                <img className='music-player-img'
+                                    src={
+                                        currentSong ?
+                                            currentSong.img :
+                                            songsArr[0].img
                                     }
-                                </button>
-                                <button className="btn-control"
-                                    onClick={() => this.nextSong()}
-                                >
-                                    <i className="fas fa-forward"></i>
-                                </button>
-                                <button className="btn-control random"
-                                    onClick={() => this.handleRandom()}
-                                >
-                                    <i className="fas fa-random"></i>
-                                </button>
-                                <button className="btn-control">
-                                    <i className="fas fa-music"></i>
-                                </button>
+                                />
+                            </div>
+                            <div className='music-player-song'>
+                                <div className='song-name'>
+                                    {
+                                        currentSong ?
+                                            currentSong.songName :
+                                            songsArr[0].songName
+                                    }
+                                </div>
+                                <div className='artiss-name'>
+                                    {
+                                        currentSong ?
+                                            currentSong.singer :
+                                            songsArr[0].singer
+                                    }
+                                </div>
                             </div>
                         </div>
-                        {/* <div className='music-player-time'>
+                        <div className='music-player-right'>
+                            <div className='music-player-controls'>
+                                <div className='control-child'>
+                                    <button className='btn-control rebeat'
+                                        onClick={() => { this.handleRepeat() }}
+                                    >
+                                        <i className="fas fa-undo"></i>
+                                    </button>
+                                    <button className='btn-control'
+                                        onClick={() => { this.preSong() }}
+                                    >
+                                        <i className="fas fa-backward"></i>
+                                    </button>
+                                    <button className="player-button" onClick={() => this.toggleAdudio()}>
+                                        {
+                                            !this.state.isPlaying ?
+                                                <i className="fas fa-play"></i> :
+                                                <i className="fas fa-pause"></i>
+                                        }
+                                    </button>
+                                    <button className="btn-control"
+                                        onClick={() => this.nextSong()}
+                                    >
+                                        <i className="fas fa-forward"></i>
+                                    </button>
+                                    <button className="btn-control random"
+                                        onClick={() => this.handleRandom()}
+                                    >
+                                        <i className="fas fa-random"></i>
+                                    </button>
+                                    <button className="btn-control lyrics"
+                                        onClick={() => this.toggleLyricModal()}
+                                    >
+                                        <i className="fas fa-music"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {/* <div className='music-player-time'>
                             <p className="song-time">
                                 {this.state.current}/{this.state.length}
                             </p>
                         </div> */}
-                        <div className='music-player-audio'>
-                            <audio
-                                src=
-                                {
-                                    currentSong ?
-                                        currentSong.file :
-                                        songsArr[0].file
-                                }
-                                onTimeUpdate={() => this.changeTimeline()}
-                            ></audio>
-                            <input type="range" className="timeline"
-                                max="100" value="0"
-                                onChange={() => this.changeSeek()}
-                            ></input>
+                            <div className='music-player-audio'>
+                                <audio
+                                    src=
+                                    {
+                                        currentSong ?
+                                            currentSong.file :
+                                            songsArr[0].file
+                                    }
+                                    onTimeUpdate={() => this.changeTimeline()}
+                                ></audio>
+                                <input type="range" className="timeline"
+                                    max="100" value="0"
+                                    onChange={() => this.changeSeek()}
+                                ></input>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
+
         );
     }
 
@@ -269,14 +291,14 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         songPlay: state.song.songPlay,
-        listSongs: state.admin.songs
+        listSongs: state.admin.songs,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getAllSongs: () => dispatch(actions.getAllSongs()),
-        getSongToPlay: (song) => dispatch(actions.getSongToPlay(song))
+        getSongToPlay: (song) => dispatch(actions.getSongToPlay(song)),
     };
 };
 
