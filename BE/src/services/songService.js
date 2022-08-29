@@ -215,6 +215,56 @@ let getNewReleaseSongs = () => {
     })
 }
 
+let createNewFavoriteSong = (songId, userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let songData = {}
+            if (!songId || !userId) {
+                songData.errCode = 1
+                songData.errMessage = 'Missing songid or userid'
+            } else {
+                await db.Favorite.create({
+                    userID: userId,
+                    songID: songId,
+                })
+                songData.errCode = 0
+                songData.errMessage = 'Create new song successfully'
+                songData.userID = userId
+                songData.songID = songId
+            }
+            resolve(songData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let deleteFavoriteSong = (favoriteId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let songData = {}
+            let favorite = await db.Favorite.findOne({
+                where: { id: favoriteId }
+            })
+
+            if (favorite) {
+                await db.Favorite.destroy({
+                    where: { id: favoriteId }
+                })
+
+                songData.errCode = 0
+                songData.errMessage = "Delete Favorite Song Successfully"
+            } else {
+                songData.errCode = 1
+                songData.errMessage = "This Favorite Song is not existed"
+            }
+            resolve(songData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     getAllSongs: getAllSongs,
     createNewSong: createNewSong,
@@ -223,4 +273,6 @@ module.exports = {
     getRecentSongs: getRecentSongs,
     getTop3Songs: getTop3Songs,
     getNewReleaseSongs: getNewReleaseSongs,
+    createNewFavoriteSong: createNewFavoriteSong,
+    deleteFavoriteSong: deleteFavoriteSong,
 }
