@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { path } from '../../../utils'
 import './NewRelease_Chart.scss'
 import poster1 from '../../../assets/images/poster_1.jpg'
 import * as actions from '../../../store/actions/index'
@@ -36,8 +38,12 @@ class NewRleaseChart extends Component {
         this.props.getSongToPlay(song)
     }
 
+    handleViewAllSongs = () => {
+        this.props.history.push(path.ALLSONGS)
+    }
+
     render() {
-        console.log(this.state.top3Songs);
+
         let { newReleaseSongs, top3Songs } = this.state
         return (
             <div className='new-release-chart-container'>
@@ -46,7 +52,9 @@ class NewRleaseChart extends Component {
                         <div className='new-release-content'>
                             <div className='new-release-header'>
                                 <div className='new-release-title'>Mới phát hành</div>
-                                <div className='new-release-button'>
+                                <div className='new-release-button'
+                                    onClick={() => this.handleViewAllSongs()}
+                                >
                                     Xem tất cả
                                     <i className="fas fa-angle-right"></i>
                                 </div>
@@ -136,4 +144,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewRleaseChart);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewRleaseChart));

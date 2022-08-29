@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { path } from '../../../utils'
 import './Recent.scss'
 import * as actions from '../../../store/actions/index'
 
@@ -29,6 +31,10 @@ class Recent extends Component {
         this.props.getSongToPlay(song)
     }
 
+    handleViewAllSongs = () => {
+        this.props.history.push(path.ALLSONGS)
+    }
+
     render() {
         // console.log("songsArr: ", this.props.recentSongs);
         // console.log("songsArr state: ", this.state.songsArr);
@@ -39,7 +45,9 @@ class Recent extends Component {
                 <div className='recent-content'>
                     <div className='recent-header'>
                         <div className='recent-title'>Gần đây</div>
-                        <div className='recent-button'>
+                        <div className='recent-button'
+                            onClick={() => this.handleViewAllSongs()}
+                        >
                             Xem tất cả
                             <i className="fas fa-angle-right"></i>
                         </div>
@@ -82,4 +90,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Recent);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Recent));

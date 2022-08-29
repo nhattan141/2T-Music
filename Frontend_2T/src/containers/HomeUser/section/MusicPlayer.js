@@ -10,23 +10,38 @@ class MusicPlayer extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            songIndex: '',
             isPlaying: false,
             isRepeat: false,
             currentSong: {},
             songsArr: [],
             isOpen: false,
+            defaultSong: {
+                file: "http://127.0.0.1:8887/audios/1660655236253_song_11.mp3",
+                id: 11,
+                img: "http://127.0.0.1:8887/images/1660655236253_poster_11.jpg",
+                isNewRelease: "1",
+                isRecent: "0",
+                isTop3: "0",
+                lyrics: "I just wanna chill with you tonight\r\nAnd all the sorrow left behind uh-way\r\nSometimes I feel lost in the crowd\r\nLife is full of ups and downs\r\nBut it's alright, I feel peaceful inside\r\nAy, ya\r\nEm dạo này ổn không? Còn đi làm ở công ty cũ?\r\nCòn đi sớm về hôm nhưng mà đồng lương vẫn không khi đủ? (ay)\r\nĐồng nghiệp của em thế nào, trong thang máy có chào với nhau?\r\nCó nói qua nói lại và những cuộc họp có đào bới nhau?\r\nSếp của em thế nào? Dễ tính hay thường gắt gỏng?\r\nAnh ta có thương nhân viên hay thường buông lời sắc mỏng? (ah)\r\nEm còn thiếu ngủ trong những lần phải chạy deadline\r\nEm quên ăn quên uống, quên cả việc chải lại tóc tai (ay)\r\nNhững đôi giày cao gót chắc còn làm đau em\r\nVà tiền bao nhiêu cho đủ, ai biết ngày sau em\r\nMắt em còn mỏi không? Tám tiếng nhìn màn hình\r\nNhững tối đi về đơn độc em thấy lòng mình lặng thinh\r\nVà đừng để đời chỉ là những chuỗi ngày được chấm công (that's right)\r\nMiệng cười như nắng hạ nhưng trong lòng thì chớm đông (yo)\r\nNếu mà mệt quá giữa thành phố sống chồng lên nhau\r\nCùng lắm thì mình về quê, mình nuôi cá và trồng thêm rau (ha-ha)\r\nTrời thả vạt nắng khiến đám tóc em hoe vàng\r\nChiều nay đi giữa thành phố em bỗng thấy sao mơ màng\r\nTìm cho mình một không gian, bật bài nhạc làm em chill\r\nTâm hồn em phiêu dạt theo áng mây bên trời\r\nTrời thả vạt nắng khiến đám tóc em hoe vàng\r\nChiều nay đi giữa thành phố em bỗng thấy sao mơ màng\r\nTìm cho mình một không gian, bật bài nhạc làm em chill\r\nTâm hồn em phiêu dạt theo áng mây bên trời\r\nAnh dạo này cũng bận nhiều và cũng có thêm nhiều đêm diễn\r\nÂm nhạc mở lối cuộc đời anh như là ngọn hải đăng ở trên biển\r\nAnh được gặp những người nổi tiếng trước giờ chỉ thấy trên tivi\r\nGặp H'Hen Niê hoa hậu, gặp cả Sơn Tùng M-TP, ya\r\nĐi hát vui lắm em vì đồng âm của anh họ rất tuyệt (yeah)\r\nBọn anh hát cùng nhau khiến cho thanh xuân này như bất diệt\r\nAnh thấy mình không cô đơn, không áp lực nào buộc chân anh\r\nNhiều khi anh lên sân khấu mà dưới khán giả họ thuộc hơn anh\r\nAnh cũng có những hợp đồng, những điều khoản mà anh phải dần quen\r\nAnh cũng cần tiền, những dự án họ nói họ cần Đen (yeah)\r\nVà những con số nặng tới mức đủ sức làm choáng mình\r\nNhưng em yên tâm anh bán chất xám chứ chưa từng bán mình (ha-ha)\r\nNhưng cũng có lúc mọi thứ không như là những gì ta muốn\r\nThế giới này vận hành theo cái cách luôn ghì ta xuống, oh\r\nNhưng mà mộng mơ anh nhiều như niêu cơm của Thạch Sanh (yeah)\r\nAi muốn lấy cứ lấy-ya, không thể nào mà sạch banh\r\nTrời thả vạt nắng khiến đám tóc em hoe vàng\r\nChiều nay đi giữa thành phố em bỗng thấy sao mơ màng\r\nTìm cho mình một không gian, bật bài nhạc làm em chill\r\nTâm hồn em phiêu dạt theo áng mây bên trời\r\nTrời thả vạt nắng khiến đám tóc em hoe vàng\r\nChiều nay đi giữa thành phố em bỗng thấy sao mơ màng\r\nTìm cho mình một không gian, bật bài nhạc làm em chill\r\nTâm hồn em phiêu dạt theo áng mây bên trời\r\nMình sướng hơn những người giàu nhỉ (ay)\r\nVầng trán mình chưa hề nhàu nhĩ (ay)\r\nDù chênh vênh như là cầu khỉ (ay)\r\nĐời sóng gió mình là tàu thuỷ (ay)\r\nVì một ngày còn sống\r\nLà một ngày đắm say (một ngày đắm say)\r\nNgày đẹp trời nhất\r\nLà ngày mình còn nắm tay (ngày còn nắm tay)\r\nMình sẽ không ngã\r\nVì mình ngã họ hả hê (ay)\r\nBiển người cũng là biển\r\nCho tụi mình tắm thoả thuê\r\nVà chúng ta sẽ không\r\nLà một ai trông giống họ (một ai trông giống họ)\r\nSẽ không rỗng tuếch\r\nNhư một cái chai trong đống lọ (chai trong đống lọ)\r\nSáng chúng ta làm vì tờ bạc nhiều màu trong ví\r\nĐêm về ta chill, riêng mình một bầu không khí\r\nVì tim ta còn trẻ dù thân xác ta sẽ già\r\nNhưng mà ta không ủ rũ như là mấy con sẻ già (yeah)\r\nChúng ta có những chiều vàng, dắt tay nhau lên đồi xa\r\nNắng khoác lên mình lớp áo, nheo mắt lại nhìn trời hoa\r\nVà những đêm đen huyền dịu cho tiếng lòng thêm dõng dạc\r\nTa thấy nhau bằng tâm hồn và không cần nhìn bằng võng mạc (yes)\r\nTa sẽ cố để có được những thứ mà ta chờ mong\r\nDưới ngọn đồi, căn nhà nhỏ, nhìn ra bờ sông (nhìn ra bờ sông)\r\nVì anh chưa từng mơ ngày nào đó mình trở thành siêu sao (siêu sao)\r\nTừ ngày thơ bé anh đã muốn trở thành chưởng môn phái Tiêu Dao\r\nEm ơi vui cười lên vì đời này ai không âu lo\r\n(I just wanna chill with you tonight)\r\nNếu băn khoăn ngày mai mệt nhoài hệt như con sâu đo\r\nEm đi ra ngoài kia tìm về vài chai Strongbow-oh\r\nĐêm nay em cần chill, việc này để cho Đen Vâu lo\r\nTrời thả vạt nắng khiến đám tóc em hoe vàng\r\n(Việc này để cho Đen Vâu lo)\r\nChiều nay đi giữa thành phố em bỗng thấy sao mơ màng\r\nTìm cho mình một không gian, bật bài nhạc làm em chill\r\nTâm hồn em phiêu dạt theo áng mây bên trời\r\nPhiêu dạt theo áng mây bên trời\r\nBài hát này đã có quảng cáo\r\nKhông có tiền thì làm nhạc làm sao?",
+                singer: "Min, Đen Vâu",
+                songName: "Bài này chill phết",
+            }
         }
     }
 
     componentDidMount() {
         this.props.getAllSongs()
+        this.setState({
+            isPlaying: false,
+            isRepeat: false,
+            currentSong: this.props.songPlay,
+            songsArr: this.props.listSongs
+        })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.songPlay !== this.props.songPlay) {
             this.setState({
-                songIndex: '',
                 isPlaying: false,
                 isRepeat: false,
                 currentSong: this.props.songPlay,
@@ -133,8 +148,6 @@ class MusicPlayer extends Component {
         !this.state.isRepeat ?
             repeat.classList.add('active') :
             repeat.classList.remove('active')
-
-        console.log(this.state.isRepeat);
     }
 
     handleRandom = () => {
@@ -181,16 +194,20 @@ class MusicPlayer extends Component {
             lyrics.classList.remove('active')
     }
     render() {
-        console.log('list sonmg: ', this.state.songsArr);
-        console.log('song play: ', this.state.currentSong);
-        let { songsArr, currentSong } = this.state
+        let { songsArr, currentSong, defaultSong } = this.state
+        // console.log('list song: ', songsArr);
+        // console.log('song play: ', defaultSong);
         return (
             <>
-                <ModalLyric
-                    isOpen={this.state.isOpen}
-                    currentSong={this.state.currentSong}
-                    toggleLyricModal={this.toggleLyricModal}
-                />
+                {
+                    this.state.isOpen &&
+                    <ModalLyric
+                        isOpen={this.state.isOpen}
+                        currentSong={
+                            currentSong && defaultSong
+                        }
+                    />
+                }
                 <div className='music-player-container'>
                     <div className='music-player-content'>
                         <div className='music-player-left'>
@@ -199,7 +216,7 @@ class MusicPlayer extends Component {
                                     src={
                                         currentSong ?
                                             currentSong.img :
-                                            songsArr[0].img
+                                            defaultSong.img
                                     }
                                 />
                             </div>
@@ -208,14 +225,14 @@ class MusicPlayer extends Component {
                                     {
                                         currentSong ?
                                             currentSong.songName :
-                                            songsArr[0].songName
+                                            defaultSong.songName
                                     }
                                 </div>
                                 <div className='artiss-name'>
                                     {
                                         currentSong ?
                                             currentSong.singer :
-                                            songsArr[0].singer
+                                            defaultSong.singer
                                     }
                                 </div>
                             </div>
@@ -268,7 +285,7 @@ class MusicPlayer extends Component {
                                     {
                                         currentSong ?
                                             currentSong.file :
-                                            songsArr[0].file
+                                            defaultSong.file
                                     }
                                     onTimeUpdate={() => this.changeTimeline()}
                                 ></audio>

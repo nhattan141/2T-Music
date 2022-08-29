@@ -50,7 +50,7 @@ class UserManage extends Component {
 
     render() {
         let { songsArr } = this.state
-        console.log('songsArr: ', songsArr);
+
         return (
             <div className="song-manage-table">
                 <table className="table table-striped table-hover">

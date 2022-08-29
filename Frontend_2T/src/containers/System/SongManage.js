@@ -90,7 +90,7 @@ class SongManage extends Component {
                 this.setState({
                     ...copyState,
                 })
-                console.log(e.target.value);
+
             }
         }
 
@@ -172,7 +172,7 @@ class SongManage extends Component {
             previewImage: song.img,
             previewAudio: song.file,
         })
-        console.log('State user update: ', this.state);
+
     }
 
     handleUpdateSong = (data) => {
@@ -192,7 +192,7 @@ class SongManage extends Component {
 
     render() {
         const { songName, singer, lyrics, isRecent, isTop3, isNewRelease } = this.state;
-        console.log('song list', this.props.listSongs);
+
 
 
         return (

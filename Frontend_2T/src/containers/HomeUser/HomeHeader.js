@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { path } from '../../utils'
 import './HomeHeader.scss'
 import logo from '../../assets/images/neon_2.png'
 import avatar from '../../assets/images/avatar.jpg'
@@ -7,14 +9,29 @@ import * as actions from "../../store/actions";
 
 class HomeHeader extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
 
+        }
+    }
+
+    handleBackHome = () => {
+        this.props.history.push(path.HomeUser)
+    }
+
+    handleViewLogin = () => {
+        this.props.history.push(path.LOGIN)
+    }
 
     render() {
         const { processLogout, userInfo } = this.props;
         return (
             <div className='home-header-container'>
                 <div className='home-header-content'>
-                    <div className='left-content'>
+                    <div className='left-content'
+                        onClick={() => this.handleBackHome()}
+                    >
                         <img src={logo} />
                     </div>
                     <div className='mid-content'>
@@ -51,7 +68,7 @@ class HomeHeader extends Component {
                                 </div>
                                 :
                                 <button className='login-btn'
-                                    onClick={() => { }}
+                                    onClick={() => this.handleViewLogin()}
                                 >Login</button>
                         }
                     </div>
@@ -75,4 +92,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeHeader));

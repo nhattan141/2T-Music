@@ -15,6 +15,7 @@ import HomeUser from '../containers/HomeUser/HomeUser';
 // import Login from '../routes/Login';
 import Login from '../containers/Auth/Login';
 import System from '../routes/System';
+import AllSong from '../containers/HomeUser/section/AllSong'
 
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
@@ -58,6 +59,7 @@ class App extends Component {
                                     <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
                                     <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                     <Route path={path.HomeUser} component={(HomeUser)} />
+                                    <Route path={path.ALLSONGS} component={(AllSong)} />
                                 </Switch>
                             </CustomScrollbars>
                         </span>
