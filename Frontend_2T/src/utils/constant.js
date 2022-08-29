@@ -4,7 +4,8 @@ export const path = {
     LOGIN: '/login',
     LOG_OUT: '/logout',
     SYSTEM: '/system',
-    ALLSONGS: '/all-song'
+    ALLSONGS: '/all-song',
+    USERINFO: '/userinfo',
 };
 
 export const languages = {

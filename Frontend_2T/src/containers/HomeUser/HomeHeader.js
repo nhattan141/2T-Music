@@ -24,6 +24,10 @@ class HomeHeader extends Component {
         this.props.history.push(path.LOGIN)
     }
 
+    handleViewUserInfo = () => {
+        this.props.history.push(path.USERINFO)
+    }
+
     render() {
         const { processLogout, userInfo } = this.props;
         return (
@@ -51,7 +55,9 @@ class HomeHeader extends Component {
                                         <div className='user-info-avatar'>
                                             <img src={avatar} />
                                             <div className='user-info-control'>
-                                                <div className='control'>
+                                                <div className='control'
+                                                    onClick={() => this.handleViewUserInfo()}
+                                                >
                                                     Thông tin cá nhân
                                                 </div>
                                                 <div className='control'>
