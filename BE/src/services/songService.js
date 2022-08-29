@@ -215,6 +215,28 @@ let getNewReleaseSongs = () => {
     })
 }
 
+let getFavoriteSongOfUser = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let songData = {}
+            let songs = await db.Favorite.findAll({
+                where: { userID: userId }
+            })
+            if (songs) {
+                songData.errCode = 0
+                songData.errMessage = "Get Favorite Song Of User Successfully"
+                songData.favoriteSongs = songs
+            } else {
+                songData.errCode = 1
+                songData.errMessage = "Can't find Favorite Song Of this User"
+            }
+            resolve(songData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 let createNewFavoriteSong = (songId, userId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -223,14 +245,25 @@ let createNewFavoriteSong = (songId, userId) => {
                 songData.errCode = 1
                 songData.errMessage = 'Missing songid or userid'
             } else {
-                await db.Favorite.create({
-                    userID: userId,
-                    songID: songId,
+                let favorite = await db.Favorite.findOne({
+                    where: {
+                        userID: userId,
+                        songID: songId,
+                    }
                 })
-                songData.errCode = 0
-                songData.errMessage = 'Create new song successfully'
-                songData.userID = userId
-                songData.songID = songId
+                if (favorite) {
+                    songData.errCode = 2
+                    songData.errMessage = 'This favorite song is already exist'
+                } else {
+                    await db.Favorite.create({
+                        userID: userId,
+                        songID: songId,
+                    })
+                    songData.errCode = 0
+                    songData.errMessage = 'Create new song successfully'
+                    songData.userID = userId
+                    songData.songID = songId
+                }
             }
             resolve(songData)
         } catch (e) {
@@ -273,6 +306,7 @@ module.exports = {
     getRecentSongs: getRecentSongs,
     getTop3Songs: getTop3Songs,
     getNewReleaseSongs: getNewReleaseSongs,
+    getFavoriteSongOfUser: getFavoriteSongOfUser,
     createNewFavoriteSong: createNewFavoriteSong,
     deleteFavoriteSong: deleteFavoriteSong,
 }

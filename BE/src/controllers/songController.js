@@ -165,6 +165,22 @@ let handleGetNewReleaseSongs = async (req, res) => {
     })
 }
 
+let handleGetFavoriteSongOfUser = async (req, res) => {
+    let userId = req.query.userId
+    let songData = await songService.getFavoriteSongOfUser(userId)
+    if (songData.errCode !== 0) {
+        return res.status(500).json({
+            errCode: songData.errCode,
+            message: songData.errMessage
+        })
+    }
+    return res.status(200).json({
+        errCode: songData.errCode,
+        message: songData.errMessage,
+        favoriteSongs: songData.favoriteSongs
+    })
+}
+
 let handleCreateNewFavoriteSong = async (req, res) => {
     let songId = req.query.songId
     let userId = req.query.userId
@@ -208,6 +224,7 @@ module.exports = {
     handleGetRecentSongs: handleGetRecentSongs,
     handleGetTop3Songs: handleGetTop3Songs,
     handleGetNewReleaseSongs: handleGetNewReleaseSongs,
+    handleGetFavoriteSongOfUser: handleGetFavoriteSongOfUser,
     handleCreateNewFavoriteSong: handleCreateNewFavoriteSong,
     handleDeleteFavoriteSong: handleDeleteFavoriteSong,
 }

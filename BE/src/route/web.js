@@ -58,6 +58,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-new-release-songs', songController.handleGetNewReleaseSongs)
 
     //router favorite-songs
+    router.get('/api/get-favorite-song-of-user', songController.handleGetFavoriteSongOfUser)
     router.put('/api/create-new-favorite-song', songController.handleCreateNewFavoriteSong)
     router.delete('/api/delete-favorite-song', songController.handleDeleteFavoriteSong)
 
