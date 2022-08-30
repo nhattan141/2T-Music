@@ -14,7 +14,6 @@ class UserInfor extends Component {
         this.state = {
             id: '',
             email: '',
-            password: '',
             firstName: '',
             lastName: '',
             gender: 1,
@@ -31,7 +30,6 @@ class UserInfor extends Component {
             this.setState({
                 id: userInfo.id,
                 email: userInfo.email,
-                password: 'password',
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 gender: userInfo.gender,
@@ -50,7 +48,6 @@ class UserInfor extends Component {
             this.setState({
                 id: userInfo.id,
                 email: userInfo.email,
-                password: 'password',
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 gender: userInfo.gender,
@@ -76,21 +73,20 @@ class UserInfor extends Component {
     }
 
     resetFill = () => {
-        if (this.props.userInfo) {
-            const { userInfo } = this.props;
-            this.setState({
-                id: userInfo.id,
-                email: userInfo.email,
-                password: 'password',
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                gender: userInfo.gender,
-                avatar: userInfo.avatar,
-                previewAvatar: userInfo.avatar,
-                isOpen: false,
-                isUpdate: false
-            })
-        }
+
+        const { userInfo } = this.props;
+        this.setState({
+            id: userInfo.id,
+            email: userInfo.email,
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            gender: userInfo.gender,
+            avatar: userInfo.avatar,
+            previewAvatar: userInfo.avatar,
+            isOpen: false,
+            isUpdate: false
+        })
+
     }
 
     handleOnchangeInput = async (e, id) => {
@@ -120,13 +116,22 @@ class UserInfor extends Component {
         const form_data = new FormData();
         form_data.append('id', user.id);
         form_data.append('email', user.email)
-        form_data.append('password', user.password);
         form_data.append('firstName', user.firstName);
         form_data.append('lastName', user.lastName);
         form_data.append('gender', user.gender);
         form_data.append('avatar', user.avatar);
         this.props.updateUserInfo(form_data)
-        this.resetFill()
+        this.setState({
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender,
+            avatar: user.avatar,
+            previewAvatar: user.avatar,
+            isOpen: false,
+            isUpdate: false
+        })
     }
 
     render() {

@@ -28,6 +28,11 @@ class HomeHeader extends Component {
         this.props.history.push(path.USERINFO)
     }
 
+    handleLogout = () => {
+        this.props.processLogout()
+        this.props.history.push(path.HomeUser)
+    }
+
     render() {
         const { processLogout, userInfo } = this.props;
         return (
@@ -64,7 +69,7 @@ class HomeHeader extends Component {
                                                     Nhạc yêu thích
                                                 </div>
                                                 <div className='control'
-                                                    onClick={processLogout}
+                                                    onClick={() => this.handleLogout()}
                                                 >
                                                     Đăng xuất
                                                 </div>

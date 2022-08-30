@@ -6,7 +6,8 @@ const initialState = {
     recentSongs: [],
     newReleaseSongs: [],
     top3Songs: [],
-    songPlay: {}
+    songPlay: {},
+    favoriteSongs: []
 }
 
 const appReducer = (state = initialState, action) => {
@@ -50,6 +51,16 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 songPlay: {}
+            }
+        case actionTypes.GET_FAVORITE_SONGS_SUCCESS:
+            return {
+                ...state,
+                favoriteSongs: action.favoriteSongs
+            }
+        case actionTypes.GET_FAVORITE_SONGS_FAIL:
+            return {
+                ...state,
+                favoriteSongs: []
             }
         default:
             return state;

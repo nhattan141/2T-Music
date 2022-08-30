@@ -2,7 +2,9 @@ import actionTypes from './actionTypes';
 import {
     handleGetRecentSongs,
     handleGetNewReleaseSongs,
-    handleGetTop3Songs
+    handleGetTop3Songs,
+    handleAddFavoriteSong,
+    handleGetFavoriteSongOfUser
 } from '../../services/songService'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -100,4 +102,55 @@ export const getSongToPlaySuccess = (song) => ({
 
 export const getSongToPlayFail = () => ({
     type: actionTypes.GET_PLAY_SONGS_FAIL
+})
+
+export const addFavoriteSong = (songId, userId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleAddFavoriteSong(songId, userId)
+            if (res && res.errCode === 0) {
+                dispatch(addFavoriteSongSuccess())
+                toast.success('Add Favorite Song Success')
+            } else {
+                dispatch(addFavoriteSongFail())
+                toast.error('Add Favorite Song Fail')
+            }
+        } catch (e) {
+            console.log(e);
+            dispatch(addFavoriteSongFail())
+        }
+    }
+}
+
+export const addFavoriteSongSuccess = () => ({
+    type: actionTypes.ADD_FAVORITE_SONGS_SUCCESS,
+})
+
+export const addFavoriteSongFail = () => ({
+    type: actionTypes.ADD_FAVORITE_SONGS_FAIL
+})
+
+export const getFavoriteSongOfUser = (userId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleGetFavoriteSongOfUser(userId)
+            if (res && res.errCode === 0) {
+                dispatch(getFavoriteSongOfUserSuccess(res.favoriteSongs))
+            } else {
+                dispatch(getFavoriteSongOfUserFail())
+            }
+        } catch (e) {
+            console.log(e);
+            dispatch(getFavoriteSongOfUserFail())
+        }
+    }
+}
+
+export const getFavoriteSongOfUserSuccess = (favoriteSongs) => ({
+    type: actionTypes.GET_FAVORITE_SONGS_SUCCESS,
+    favoriteSongs: favoriteSongs,
+})
+
+export const getFavoriteSongOfUserFail = () => ({
+    type: actionTypes.GET_FAVORITE_SONGS_FAIL
 })

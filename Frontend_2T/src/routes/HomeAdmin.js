@@ -6,7 +6,7 @@ class HomeAdmin extends Component {
 
     render() {
         const { isLoggedIn, userInfo } = this.props;
-        let linkToRedirect = '/login'
+        let linkToRedirect = '/home'
         if (isLoggedIn) {
             linkToRedirect = userInfo.roleId === 0 ? '/home' : '/system/user-manage'
         }
