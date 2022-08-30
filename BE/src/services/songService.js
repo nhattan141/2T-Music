@@ -219,13 +219,33 @@ let getFavoriteSongOfUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let songData = {}
-            let songs = await db.Favorite.findAll({
-                where: { userID: userId }
-            })
+            // let songs = await db.Song.findAll({
+            //     // where: { userID: userId },
+            //     include: [
+            //         {
+            //             // model: db.User,
+            //             association: 'songs',
+            //         }
+            //     ],
+            //     // through: {
+            //     //     // model: db.Favorite,
+            //     //     attributes: ["userID", "songID"],
+            //     //     where: {
+            //     //         userID: userId
+            //     //     }
+            //     // }
+            //     //     }
+            //     // ]
+            // })
+            let songs = await db.sequelize.query(
+                `select * from favorites f 
+                inner join songs s on f.songID = s.id 
+                where f.userID = ${userId};`
+            )
             if (songs) {
                 songData.errCode = 0
                 songData.errMessage = "Get Favorite Song Of User Successfully"
-                songData.favoriteSongs = songs
+                songData.favoriteSongs = songs[0]
             } else {
                 songData.errCode = 1
                 songData.errMessage = "Can't find Favorite Song Of this User"

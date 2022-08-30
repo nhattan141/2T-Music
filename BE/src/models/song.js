@@ -9,8 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
     static associate(models) {
-      // define association here
+      Song.belongsToMany(models.User, { as: 'songs', through: models.Favorite, foreignKey: "id" });
+      // models.User.belongsToMany(models.Song, { through: models.Favorite, foreignKey: "id" })
+      // Song.hasMany(models.Favorite)
+      // models.Favorite.belongsTo(models.User, {
+      //       foreignKey: 'userID'
+      //   });
+      Song.sync()
     }
   };
   Song.init({

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Favorite.belongsTo(models.Song);
         }
     };
     Favorite.init({
@@ -20,5 +21,13 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Favorite',
     });
+    // Favorite.associate = models => {
+    //     Favorite.belongsTo(models.User, {
+    //         foreignKey: 'userID'
+    //     });
+    //     Favorite.belongsTo(models.Song, {
+    //         foreignKey: 'songID'
+    //     });
+    // }
     return Favorite;
 };
