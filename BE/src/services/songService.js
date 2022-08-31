@@ -238,7 +238,9 @@ let getFavoriteSongOfUser = (userId) => {
             //     // ]
             // })
             let songs = await db.sequelize.query(
-                `select * from favorites f 
+                `select f.id, f.userID, f.songID, 
+                s.songName, s.singer, s.lyrics, s.lyrics, s.img, s.file 
+                from favorites f 
                 inner join songs s on f.songID = s.id 
                 where f.userID = ${userId};`
             )
