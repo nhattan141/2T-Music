@@ -18,38 +18,42 @@ class ModalLyric extends Component {
 
 
     componentDidMount() {
-        if (this.props.songPlay !== undefined) {
+        if (this.props.songPlay && this.props.songPlay.lyrics) {
 
             let lyrics = this.props.songPlay.lyrics
+            setTimeout(() => {
+                this.setState({
+                    currentSong: this.props.songPlay,
+                    lyrics: lyrics.split(/\r?\n/),
+                })
+            }, 100)
 
-            this.setState({
-                currentSong: this.props.songPlay,
-                lyrics: lyrics.split(/\r?\n/),
-            })
         }
         // console.log("song play from modal dismount", this.props.songPlay);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // if (prevProps.isOpen !== this.props.isOpen) {
+        if (prevProps.isOpen !== this.props.isOpen) {
 
-        //     let lyricModal = document.querySelector('.lyric-container')
+            let lyricModal = document.querySelector('.lyric-container')
+            let hide = document.querySelector('.hide')
 
-        //     // class hide disabled modal
-        //     // class hide-lyric-container slide down modal
+            // class hide disabled modal
+            // class hide-lyric-container slide down modal
 
-        //     //when the modal is opened, remove class hide
-        //     if (this.props.isOpen) {
-        //         lyricModal.classList.remove('hide')
-        //     } else {
-        //         //when the modal is closed, add class hide-lyric-container
-        //         lyricModal.classList.add('hide-lyric-container')
-        //         //wait 3s to disabled modal
-        //         setTimeout(() => {
-        //             lyricModal.classList.add('hide-lyric-container')
-        //         }, 3000)
-        //     }
-        // }
+            //when the modal is opened, remove class hide
+            if (this.props.isOpen) {
+                lyricModal.classList.remove('hide')
+            } else {
+                //when the modal is closed, add class hide-lyric-container
+                lyricModal.classList.add('hide-lyric-container')
+                //wait 3s to disabled modal
+                setTimeout(() => {
+                    lyricModal.classList.add('hide')
+                    lyricModal.classList.remove('hide-lyric-container')
+                }, 3000)
+            }
+        }
 
         if (prevProps.songPlay !== this.props.songPlay) {
             let lyrics = this.props.songPlay.lyrics
@@ -66,7 +70,7 @@ class ModalLyric extends Component {
         let { currentSong, lyrics } = this.state
 
         return (
-            <div className='lyric-container'>
+            <div className='lyric-container hide'>
                 <div className="lyric-content">
                     <div className="lyric-content-left">
                         <div className="song-info">

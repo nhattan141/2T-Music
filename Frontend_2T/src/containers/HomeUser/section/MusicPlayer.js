@@ -200,7 +200,7 @@ class MusicPlayer extends Component {
         return (
             <>
                 {
-                    this.state.isOpen &&
+                    // this.state.isOpen &&
                     <ModalLyric
                         isOpen={this.state.isOpen}
                         currentSong={

@@ -4,7 +4,8 @@ import {
     handleGetNewReleaseSongs,
     handleGetTop3Songs,
     handleAddFavoriteSong,
-    handleGetFavoriteSongOfUser
+    handleGetFavoriteSongOfUser,
+    handleDeleteFavoriteSongOfUser
 } from '../../services/songService'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -153,4 +154,31 @@ export const getFavoriteSongOfUserSuccess = (favoriteSongs) => ({
 
 export const getFavoriteSongOfUserFail = () => ({
     type: actionTypes.GET_FAVORITE_SONGS_FAIL
+})
+
+export const deleteFavoriteSongOfUser = (favoriteId, userId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await handleDeleteFavoriteSongOfUser(favoriteId)
+            if (res && res.errCode === 0) {
+                dispatch(deleteFavoriteSongOfUserSuccess())
+                dispatch(getFavoriteSongOfUser(userId))
+                toast.success('Delete Favorite Song Success')
+            } else {
+                dispatch(deleteFavoriteSongOfUserFail())
+                toast.error('Delete Favorite Song Fail')
+            }
+        } catch (e) {
+            console.log(e);
+            dispatch(deleteFavoriteSongOfUserFail())
+        }
+    }
+}
+
+export const deleteFavoriteSongOfUserSuccess = () => ({
+    type: actionTypes.DELETE_FAVORITE_SONG_SUCCESS,
+})
+
+export const deleteFavoriteSongOfUserFail = () => ({
+    type: actionTypes.DELETE_FAVORITE_SONG_FAIL
 })

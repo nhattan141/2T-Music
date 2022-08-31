@@ -6,6 +6,7 @@ export const path = {
     SYSTEM: '/system',
     ALLSONGS: '/all-song',
     USERINFO: '/userinfo',
+    FAVORITE: '/favorites',
 };
 
 export const languages = {

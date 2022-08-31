@@ -17,6 +17,7 @@ import Login from '../containers/Auth/Login';
 import System from '../routes/System';
 import AllSong from '../containers/HomeUser/section/AllSong'
 import UserInfor from '../containers/HomeUser/section/UserInfor'
+import Favorites from './HomeUser/section/Favorites';
 
 import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
@@ -62,6 +63,7 @@ class App extends Component {
                                     <Route path={path.HomeUser} component={(HomeUser)} />
                                     <Route path={path.ALLSONGS} component={(AllSong)} />
                                     <Route path={path.USERINFO} component={(UserInfor)} />
+                                    <Route path={path.FAVORITE} component={(Favorites)} />
                                 </Switch>
                             </CustomScrollbars>
                         </span>

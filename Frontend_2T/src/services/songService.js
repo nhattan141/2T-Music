@@ -19,7 +19,10 @@ const handleAddFavoriteSong = (songId, userId) => {
 
 const handleGetFavoriteSongOfUser = (userId) => {
     return axios.get(`/api/get-favorite-song-of-user?userId=${userId}`)
+}
 
+const handleDeleteFavoriteSongOfUser = (favoriteId) => {
+    return axios.delete(`/api/delete-favorite-song?favoriteId=${favoriteId}`)
 }
 
 export {
@@ -27,5 +30,6 @@ export {
     handleGetNewReleaseSongs,
     handleGetTop3Songs,
     handleAddFavoriteSong,
-    handleGetFavoriteSongOfUser
+    handleGetFavoriteSongOfUser,
+    handleDeleteFavoriteSongOfUser
 }

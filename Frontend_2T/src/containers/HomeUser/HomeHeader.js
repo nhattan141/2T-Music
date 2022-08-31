@@ -33,6 +33,10 @@ class HomeHeader extends Component {
         this.props.history.push(path.HomeUser)
     }
 
+    handleViewFavorites = () => {
+        this.props.history.push(path.FAVORITE)
+    }
+
     render() {
         const { processLogout, userInfo } = this.props;
         return (
@@ -65,7 +69,9 @@ class HomeHeader extends Component {
                                                 >
                                                     Thông tin cá nhân
                                                 </div>
-                                                <div className='control'>
+                                                <div className='control'
+                                                    onClick={() => this.handleViewFavorites()}
+                                                >
                                                     Nhạc yêu thích
                                                 </div>
                                                 <div className='control'
