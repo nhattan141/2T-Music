@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { path } from '../../utils';
+import { withRouter } from 'react-router';
 import * as actions from "../../store/actions";
 import Navigator from '../../components/Navigator';
 import { adminMenu } from './menuApp';
 import './Header.scss';
 
 class Header extends Component {
+
+    handleLogout = () => {
+        this.props.processLogout()
+        this.props.history.push(path.LOGIN)
+    }
 
     render() {
         const { processLogout, userInfo } = this.props;
@@ -23,7 +29,7 @@ class Header extends Component {
                     {userInfo && userInfo.roleId === 1 && userInfo.firstName ? userInfo.lastName : ''}
                 </span>
                 {/* nút logout */}
-                <div className="btn btn-logout" onClick={processLogout}>
+                <div className="btn btn-logout" onClick={() => this.handleLogout()}>
                     <i className="fas fa-sign-out-alt"></i>
                 </div>
             </div>
@@ -45,4 +51,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

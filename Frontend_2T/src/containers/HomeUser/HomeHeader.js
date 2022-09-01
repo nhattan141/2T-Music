@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import { path } from '../../utils'
 import './HomeHeader.scss'
 import logo from '../../assets/images/neon_2.png'
-import avatar from '../../assets/images/avatar.jpg'
 import * as actions from "../../store/actions";
 import ListSeach from './section/ListSeach';
 
@@ -87,7 +86,7 @@ class HomeHeader extends Component {
                                             {userInfo.firstName} {userInfo.lastName}
                                         </div>
                                         <div className='user-info-avatar'>
-                                            <img src={avatar} />
+                                            <img src={userInfo.avatar} />
                                             <div className='user-info-control'>
                                                 <div className='control'
                                                     onClick={() => this.handleViewUserInfo()}
