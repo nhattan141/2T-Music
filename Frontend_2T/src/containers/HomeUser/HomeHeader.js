@@ -6,13 +6,15 @@ import './HomeHeader.scss'
 import logo from '../../assets/images/neon_2.png'
 import avatar from '../../assets/images/avatar.jpg'
 import * as actions from "../../store/actions";
+import ListSeach from './section/ListSeach';
 
 class HomeHeader extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
+            isOpenListSearch: false,
+            inputSearch: ''
         }
     }
 
@@ -37,8 +39,24 @@ class HomeHeader extends Component {
         this.props.history.push(path.FAVORITE)
     }
 
+    handleOpenListSearch = (e) => {
+        this.setState({
+            isOpenListSearch: true,
+            inputSearch: e.target.value.toLowerCase(),
+        })
+    }
+
+    handleCloseListSearch = () => {
+        setTimeout(() => {
+            this.setState({
+                isOpenListSearch: false
+            })
+        }, 200)
+    }
+
     render() {
-        const { processLogout, userInfo } = this.props;
+        const { userInfo } = this.props;
+        const { isOpenListSearch, inputSearch } = this.state
         return (
             <div className='home-header-container'>
                 <div className='home-header-content'>
@@ -50,7 +68,14 @@ class HomeHeader extends Component {
                     <div className='mid-content'>
                         <div className='search_group'>
                             <i className="fas fa-search"></i>
-                            <input type='test' name='search' className='search' />
+                            <input type='test' name='search' className='search'
+                                onChange={(e) => this.handleOpenListSearch(e)}
+                                onBlur={() => this.handleCloseListSearch()}
+                            />
+                            <ListSeach
+                                isOpenListSearch={isOpenListSearch}
+                                inputSearch={inputSearch}
+                            />
                         </div>
                     </div>
                     <div className='right-content'>
